@@ -1,0 +1,712 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  background: #f5f6f8;
+  color: #24292f;
+
+}
+
+#root {
+
+}
+
+.app {
+
+}
+
+.app-header h1 {
+  font-size: 22px;
+  margin: 0 0 16px;
+}
+
+.panel {
+  background: #fff;
+  border: 1px solid #e1e4e8;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.panel h2 {
+  font-size: 15px;
+  margin: 0 0 12px;
+}
+
+select,
+input {
+  padding: 6px 8px;
+  border: 1px solid #d1d5da;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+}
+
+select:focus,
+input:focus {
+  outline: 2px solid #0969da33;
+  border-color: #0969da;
+}
+
+button {
+  padding: 6px 12px;
+  border: 1px solid #d1d5da;
+  border-radius: 6px;
+  background: #f6f8fa;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+button:hover {
+  background: #eef1f4;
+}
+
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.output-header h2 {
+  margin: 0;
+}
+
+/* 路由与导航 */
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.app-header h1 {
+  margin: 0;
+}
+
+.app-nav {
+  display: flex;
+  gap: 4px;
+}
+
+.app-nav a {
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: #24292f;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.app-nav a:hover {
+  background: #e9ecf0;
+}
+
+.app-nav a.nav-active {
+  background: #0969da;
+  color: #fff;
+}
+
+/* 文档列表与布局预览页 */
+
+.layout-main {
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.doc-error {
+  color: #cf222e;
+}
+
+.doc-loading {
+  color: #6a737d;
+}
+
+.doc-p {
+  margin: 6px 0;
+  line-height: 1.7;
+}
+
+.doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.doc-table th,
+.doc-table td {
+  border: 1px solid #d1d5da;
+  padding: 6px 10px;
+  text-align: left;
+}
+
+.doc-table th {
+  background: #f0f1f3;
+}
+
+.row-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.row-actions button {
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+/* AI 布局对话 */
+
+.chat-layout {
+  max-width: none;
+  display: grid;
+  /* 右侧预览固定为 A4 纸宽（210mm ≈ 794px），左侧对话占满剩余宽度 */
+  grid-template-columns: minmax(320px, 1fr) auto;
+  gap: 16px;
+  align-items: start;
+}
+
+/* 布局对话页放开 .app 的 1200px 上限，让左侧对话列随窗口自适应 */
+.app:has(.chat-layout) {
+  max-width: none;
+}
+
+@media (max-width: 960px) {
+  .chat-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .preview-panel .ai-frame {
+    width: 100%;
+  }
+}
+
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+  height: 82vh;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 8px 2px;
+}
+
+.chat-bubble {
+  max-width: 88%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.chat-user {
+  align-self: flex-end;
+  background: #0969da;
+  color: #fff;
+  border-bottom-right-radius: 2px;
+}
+
+.chat-assistant {
+  align-self: flex-start;
+  background: #eaeef2;
+  color: #24292f;
+  border-bottom-left-radius: 2px;
+}
+
+.chat-error {
+  background: #ffebe9;
+  color: #cf222e;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  margin-top: 8px;
+}
+
+.chat-input {
+  flex: 1;
+  resize: none;
+  padding: 8px 10px;
+  border: 1px solid #d1d5da;
+  border-radius: 6px;
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.chat-input:focus {
+  outline: 2px solid #0969da;
+  outline-offset: -1px;
+}
+
+.chat-thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.chat-thumbs img {
+  max-width: 120px;
+  max-height: 90px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.chat-attach {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.chat-attach-item {
+  position: relative;
+}
+
+.chat-attach-item img {
+  width: 56px;
+  height: 56px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid #d1d5da;
+}
+
+.chat-attach-item button {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border-radius: 50%;
+  border: none;
+  background: #57606a;
+  color: #fff;
+  font-size: 12px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.btn-attach {
+  white-space: nowrap;
+}
+
+.preview-panel .ai-frame {
+  width: 210mm;
+  height: 82vh;
+}
+
+.ai-frame {
+  width: 100%;
+  height: 80vh;
+  border: 1px solid #e1e4e8;
+  border-radius: 6px;
+  background: #e9eaee;
+}
+
+.chat-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+
+.chat-toolbar label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #57606a;
+}
+
+.chat-toolbar select {
+  padding: 4px 6px;
+  border: 1px solid #d1d5da;
+  border-radius: 6px;
+  font-size: 13px;
+  background: #fff;
+}
+
+.btn-plain {
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+.btn-strong {
+  padding: 8px 22px;
+  border: none;
+  border-radius: 6px;
+  background: #0969da;
+  color: #fff;
+  font-size: 14px;
+}
+
+.btn-strong:hover {
+  background: #0757ba;
+}
+
+.modal-mask {
+  position: fixed;
+  inset: 0;
+  background: #1f232899;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-box {
+  width: min(640px, 92vw);
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px 20px 20px;
+  box-shadow: 0 12px 40px #0003;
+}
+
+.modal-box h3 {
+  margin: 0 0 10px;
+}
+
+.modal-content {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d1d5da;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* ---------- 模板编辑器（/editor） ---------- */
+
+/* 编辑器放开 .app 的 1200px 上限并撑满剩余视口高度 */
+.app:has(.editor-wrap) {
+  max-width: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.editor-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  margin: 0 -24px -24px;
+}
+
+.editor-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background: #fff;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.editor-title {
+  font-size: 13px;
+  color: #57606a;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.editor-puck {
+  flex: 1;
+  min-height: 0;
+}
+
+/* A4 画布：灰色背景上叠放多个页面组件 */
+.page-canvas {
+  padding: 16px 0;
+}
+
+/* 页面组件 = 一张 A4 纸（编辑预览与导出共用同一尺寸契约） */
+.tpl-page {
+  position: relative;
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 12mm;
+  box-shadow: 0 1px 8px #00000026;
+  box-sizing: border-box;
+}
+
+/* 页面名称标签：仅编辑时显示，导出/打印隐藏 */
+.tpl-page-tag {
+  position: absolute;
+  top: 4mm;
+  right: 6mm;
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+/* 组件样式（与导出 HTML 内联样式保持一致）；块间距由固定 CSS 控制（组件级间距配置已下线） */
+.tpl-block {
+  margin-bottom: 16px;
+}
+
+.tpl-text {
+  margin: 0;
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.tpl-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 12px;
+}
+
+.tpl-card-title {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #2563eb;
+}
+
+.tpl-chart svg {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.tpl-stat-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 16px;
+  text-align: center;
+}
+
+.tpl-stat-title {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.tpl-stat-value {
+  font-size: 32px;
+  font-weight: bold;
+  color: #2563eb;
+  margin: 6px 0;
+}
+
+.tpl-stat-note {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.tpl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.tpl-table th,
+.tpl-table td {
+  border: 1px solid #e5e7eb;
+  padding: 6px 10px;
+  text-align: center;
+}
+
+.tpl-table th {
+  background: #eff6ff;
+  color: #1e3a5f;
+}
+
+.tpl-stat-row {
+  display: flex;
+  gap: 12px;
+}
+
+.tpl-stat-row .tpl-stat-card {
+  flex: 1;
+  min-width: 0;
+}
+
+.tpl-info-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tpl-info-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.tpl-info-label {
+  font-weight: bold;
+  color: #1e3a5f;
+  font-size: 14px;
+}
+
+.tpl-info-value {
+  color: #374151;
+  font-size: 14px;
+}
+
+.tpl-stat-icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 6px;
+  border-radius: 50%;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.tpl-cols {
+  display: flex;
+  align-items: stretch;
+}
+
+.tpl-cols>div {
+  min-width: 0;
+}
+
+/* 间距组件：编辑器内虚线框+提示可见，导出/打印隐藏辅助样式只留高度 */
+.tpl-spacer {
+  position: relative;
+  outline: 1px dashed #d1d5da;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tpl-spacer-tag {
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+/* 数据脚本组件：编辑器内显示占位卡片，导出/打印隐藏 */
+.tpl-data-script-tag {
+  border: 1px dashed #93c5fd;
+  border-radius: 6px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 12px;
+  padding: 8px 12px;
+}
+
+/* 数据脚本字段（agent-bind） */
+.bind-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.bind-status {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #57606a;
+}
+
+.bind-code {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+}
+
+/* 动态列表格行内单元格说明（跟随列配置动态生成） */
+.matrix-cells {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.matrix-cell-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.matrix-cell-label {
+  font-size: 12px;
+  color: #57606a;
+}
+
+.matrix-cell-field textarea {
+  width: 100%;
+  resize: vertical;
+  font: inherit;
+  font-size: 13px;
+  padding: 4px 8px;
+  border: 1px solid var(--puck-color-grey-04, #d1d5db);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* 自定义大纲树（显示组件名称，点击选中） */
+.custom-outline {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+}
+
+.custom-outline-empty {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 4px;
+}
+
+.custom-outline-row {
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-outline-row:hover {
+  background: #eef1f4;
+}
+
+.custom-outline-row.is-selected {
+  background: #dbeafe;
+  color: #1d4ed8;
+  font-weight: 600;
+}

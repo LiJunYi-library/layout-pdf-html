@@ -1,0 +1,179 @@
+// 页面级样式（非组件）；组件卡片样式在 cardCss.ts
+.grid-demo-page {
+  padding: 24px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .grid-demo-page-header {
+    padding-bottom: 16px;
+
+  }
+
+  .grid-demo-page-main {
+    height: 1px;
+    flex: 1;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  // 左侧组件栏
+  .palette {
+    min-width: 180px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    box-sizing: border-box;
+    height: 100%;
+    overflow-y: auto;
+
+    details {
+      margin-top: 8px;
+
+      summary {
+        cursor: pointer;
+        color: #555;
+      }
+    }
+
+    .palette-item {
+      margin: 6px 0 0 16px;
+      padding: 6px 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #fff;
+      cursor: grab;
+      user-select: none;
+    }
+  }
+
+  .main-content {
+    width: calc(210mm + 100px + 40px);
+    min-width: calc(210mm + 100px + 40px);
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+
+    // 页面管理：缩略块可拖拽排序
+    .edit-pages {
+      width: 100px;
+      height: 100%;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 8px;
+      box-sizing: border-box;
+
+      .page-thumb {
+        width: 100%;
+        aspect-ratio: 210 / 297;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        color: #888;
+        cursor: grab;
+        position: relative;
+        flex-shrink: 0;
+
+        &.active {
+          border-color: #5470c6;
+          color: #5470c6;
+        }
+
+        &.dragging {
+          opacity: 0.4;
+        }
+
+        .remove {
+          position: absolute;
+          top: -6px;
+          right: -6px;
+          width: 16px;
+          height: 16px;
+          padding: 0;
+          font-size: 10px;
+          line-height: 1;
+          border-radius: 50%;
+          border: 1px solid #ddd;
+          background: #fff;
+          cursor: pointer;
+        }
+      }
+
+      .add-page {
+        flex-shrink: 0;
+        padding: 6px 0;
+        border: 1px dashed #ccc;
+        border-radius: 4px;
+        background: transparent;
+        color: #888;
+        cursor: pointer;
+      }
+    }
+
+    .pages {
+      width: calc(210mm + 30px);
+      min-width: calc(210mm + 30px);
+      height: 100%;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+
+  // 单页 A4 容器
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    background: #ffffff;
+
+    &.active {
+      border: 2px solid #5470c6;
+    }
+
+    .canvas {
+      width: 100%;
+    }
+  }
+
+  // 右侧配置面板
+  .config {
+    width: 300px;
+    flex-shrink: 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+
+    .close {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+    }
+  }
+
+  // 底部 JSON 展示区
+  .json-panel {
+    display: flex;
+    gap: 16px;
+
+    .json-block {
+      flex: 1;
+      min-width: 0;
+
+      pre {
+        background: #f0f0f0;
+        padding: 12px;
+        border-radius: 8px;
+        overflow: auto;
+      }
+    }
+  }
+}

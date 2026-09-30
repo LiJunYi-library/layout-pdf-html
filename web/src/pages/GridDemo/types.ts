@@ -1,0 +1,29 @@
+// GridDemo 共享类型
+export interface TableProps {
+  columns: string[]
+  rows: string[][]
+  /** 列宽百分比，与 columns 等长，合计 100 */
+  colWidths: number[]
+}
+
+interface BaseContent {
+  /** 组件类型，开发用判别字段（决定渲染哪个组件、哪个配置面板） */
+  componentType: string
+  /** 组件分类，左侧组件栏按此字段分组（两级树的父节点） */
+  componentCategory: string
+  /** 组件名称，给用户看的固定标识（不可编辑） */
+  componentName: string
+  /** 自定义名，用户在配置面板可改，不渲染到页面上 */
+  name: string
+}
+
+export type Content =
+  | (BaseContent & { componentType: 'stat'; value: string; color: string })
+  | (BaseContent & { componentType: 'chart'; data: number[] })
+  | (BaseContent & { componentType: 'text'; text: string })
+  | (BaseContent & TableProps & { componentType: 'table' })
+
+export type StatContent = Extract<Content, { componentType: 'stat' }>
+export type ChartContent = Extract<Content, { componentType: 'chart' }>
+export type TextContent = Extract<Content, { componentType: 'text' }>
+export type TableContent = Extract<Content, { componentType: 'table' }>

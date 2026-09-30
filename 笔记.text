@@ -1,0 +1,34 @@
+✨ 推荐一个适合用来做pdf的图标库                                                                                                         
+ 
+ ● User asks: recommend an icon library suitable for PDF use. Context: their PDF templates are server-rendered HTML (Jinja2 + ECharts),   
+   printed A4, no external resources allowed (template contract: only /oss/files/ and /static/ resources). So icons must be self-contained
+   … (24 more lines, ctrl+o to expand)
+ 
+ ● 结合你的架构（服务端渲染 A4 打印页、模板契约禁止外部资源、LLM 生成 HTML），推荐按场景选：                                              
+                                                                                                                                          
+   首选：Inline SVG 图标集                                                                                                                
+                                                                                                                                          
+   • Tabler Icons（MIT，5000+，线性统一风格）或 Lucide（ISC，Feather 的现代续作）。特点是每个图标就是一个干净的 <svg> 标签，LLM 可以直接把
+     SVG 内联进模板——零依赖、矢量、打印不失真、currentColor 继承文字颜色好配色。                                                          
+   • 这正好契合你的"禁止外部资源"契约：SVG 直接写在 HTML 里，什么请求都不发。                                                             
+                                                                                                                                          
+   卡通风格需求（学校场景）：Noto Emoji / Twemoji                                                                                         
+                                                                                                                                          
+   • 彩色、圆润、卡通感强，也是 SVG 格式。Twemoji（MIT）和 Google Noto Emoji（Apache 2.0）都有"每个表情一个独立 SVG 文件"的发行包。       
+                                                                                                                                          
+   不推荐的                                                                                                                               
+                                                                                                                                          
+   • Font Awesome 这类图标字体：要加载 woff2 字体文件，打印渲染容易翻车（字体没加载完就渲染成豆腐块），而且得往 /static/ 放字体文件，没必 
+     要。                                                                                                                                 
+   • 任何 CDN 引用——你的契约本来就禁止。                                                                                                  
+                                                                                                                                          
+   落地建议                                                                                                                               
+                                                                                                                                          
+   LLM 背不出准确的 SVG path，直接让它"画一个奖杯图标"会瞎编。两个稳妥做法：                                                              
+                                                                                                                                          
+   1. 建 /static/icons/ 目录：把精选的几十个图标（按公安/学校场景挑）存成独立 SVG 文件，模板里用 <img src="/static/icons/trophy.svg"> 引用
+      ——已在契约白名单内，最可靠。                                                                                                        
+   2. 或写进规范：把几个最常用图标的完整 SVG 代码贴进 specs.content，LLM 照抄（和上次 formatter 一个道理，照抄命中率高）。                
+                                                                                                                                          
+   我建议做法 1：图标库做成"精选素材目录"而不是全量库，运营/设计师往目录里放文件，规范里只列可用图标清单。要搞的话我可以先建目录放一批    
+   Tabler + Twemoji 图标进去试试效果。 

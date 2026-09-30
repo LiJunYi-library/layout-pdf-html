@@ -1,0 +1,2709 @@
+[
+  {
+    "specificationUuid": "d805032d-6b56-4c7f-a74d-7c572617dc1f",
+    "specificationRevisionUuid": "24e9e182-1878-49ed-b509-1c2c13f461b7",
+    "specificationRevision": 13,
+    "name": "学校心理健康标准测评结果规范",
+    "status": "active",
+    "definitions": {
+      "results": [
+        {
+          "key": "result_cf9068c3ca91",
+          "name": "心理风险",
+          "valueType": "level",
+          "deprecated": false,
+          "description": "心理风险",
+          "valueSchema": {
+            "labels": {
+              "mild": "低风险",
+              "normal": "无风险",
+              "critical": "高风险",
+              "moderate": "中风险"
+            },
+            "values": [
+              "normal",
+              "mild",
+              "moderate",
+              "critical"
+            ]
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_c37a277fb97a",
+          "name": "不良行为倾向",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=无风险，2=轻度预警，3=严重预警。反映电子产品过度使用、烟酒药物接触等可能明显影响正常生活的不良行为线索。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "无风险",
+              "2": "轻度预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_7450ac483c59",
+          "name": "攻击性倾向",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=无风险，2=轻度预警，3=严重预警。反映愤怒、敌意、威胁、肢体冲突等可能伤害他人的倾向。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "无风险",
+              "2": "轻度预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_d67f06690048",
+          "name": "回避行为",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=无风险，2=轻度预警，3=严重预警。反映持续逃课、严重拖延、拒绝沟通或封闭自我等回避行为。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "无风险",
+              "2": "轻度预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_dc3cdf057d5f",
+          "name": "被霸凌风险",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=无风险，2=轻度预警，3=严重预警。反映遭遇孤立、排斥、不被同伴接纳或被霸凌的风险线索。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "无风险",
+              "2": "轻度预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_1fa1f17ecfe1",
+          "name": "自我伤害倾向",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=无风险，2=轻度预警，3=严重预警。反映在压力或痛苦下通过伤害自己缓解心理痛苦的意图或行为线索。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "无风险",
+              "2": "轻度预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_9a98f16dd025",
+          "name": "攻击性",
+          "valueType": "number",
+          "deprecated": true,
+          "description": "1=健康，2=轻度，3=中度，4=重度，5=严重。反映以言语或身体行为伤害他人、破坏环境的行为模式。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better",
+          "deprecationReason": "不通用"
+        },
+        {
+          "key": "result_50244dbbc659",
+          "name": "学习压力",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=健康，2=轻度，3=中度，4=重度，5=严重。反映学业负担、成绩焦虑、时间管理和未来发展带来的心理压力。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_ca05463ce2ca",
+          "name": "情绪不稳定",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=健康，2=轻度，3=中度，4=重度，5=严重。反映情绪波动、反应过强、易怒或难以调节情绪的程度。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_dc702e099f31",
+          "name": "孤独",
+          "valueType": "number",
+          "deprecated": true,
+          "description": "1=健康，2=轻度，3=中度，4=重度，5=严重。反映与他人隔离、缺少朋友、不被理解或难以融入群体的感受。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better",
+          "deprecationReason": "不通用"
+        },
+        {
+          "key": "result_4d769ffc3f4b",
+          "name": "抑郁",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=健康，2=轻度，3=中度，4=重度，5=严重。反映情绪低落、兴趣减退、缺乏活力和动力等抑郁相关表现。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_e5e41f42ef4f",
+          "name": "躯体化",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=健康，2=轻度，3=中度，4=重度，5=严重。反映心理困扰通过头痛、腹痛、恶心或疲倦等身体不适表达的程度。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_6bf30bd3deda",
+          "name": "恐怖",
+          "valueType": "number",
+          "deprecated": true,
+          "description": "1=健康，2=轻度，3=中度，4=重度，5=严重。反映对特定事物或情境的强烈恐惧及其对日常生活的影响。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better",
+          "deprecationReason": "不通用"
+        },
+        {
+          "key": "result_b9f3e2338f23",
+          "name": "焦虑",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_28a6913d5374",
+          "name": "人际关系敏感",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_a1056d699674",
+          "name": "性格特质",
+          "valueType": "tag",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {}
+        },
+        {
+          "key": "result_a4eba7d96488",
+          "name": "行为习惯",
+          "valueType": "tag",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {}
+        },
+        {
+          "key": "result_4f52e6883798",
+          "name": "访谈信息质量",
+          "valueType": "choice",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "labels": {
+              "不足": "不足",
+              "中等": "中等",
+              "很高": "很高",
+              "较低": "较低",
+              "较高": "较高"
+            },
+            "values": [
+              "不足",
+              "较低",
+              "中等",
+              "较高",
+              "很高"
+            ]
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_0310e1311568",
+          "name": "给本人的总结",
+          "valueType": "text",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {}
+        },
+        {
+          "key": "result_8e06c042f8ef",
+          "name": "给老师的总结",
+          "valueType": "text",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {}
+        }
+      ],
+      "displayOrder": [
+        {
+          "key": "result_cf9068c3ca91",
+          "kind": "result"
+        },
+        {
+          "key": "metric_group_500b1004fc2f",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "result_9a98f16dd025",
+          "kind": "result"
+        },
+        {
+          "key": "metric_group_4680db8a2d26",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "result_dc702e099f31",
+          "kind": "result"
+        },
+        {
+          "key": "result_6bf30bd3deda",
+          "kind": "result"
+        },
+        {
+          "key": "result_a1056d699674",
+          "kind": "result"
+        },
+        {
+          "key": "result_a4eba7d96488",
+          "kind": "result"
+        },
+        {
+          "key": "result_0310e1311568",
+          "kind": "result"
+        },
+        {
+          "key": "result_8e06c042f8ef",
+          "kind": "result"
+        },
+        {
+          "key": "result_4f52e6883798",
+          "kind": "result"
+        }
+      ],
+      "metricGroups": [
+        {
+          "key": "metric_group_500b1004fc2f",
+          "name": "危机识别",
+          "deprecated": false,
+          "resultKeys": [
+            "result_c37a277fb97a",
+            "result_7450ac483c59",
+            "result_d67f06690048",
+            "result_dc3cdf057d5f",
+            "result_1fa1f17ecfe1"
+          ],
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "分",
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "metric_group_4680db8a2d26",
+          "name": "心理健康",
+          "deprecated": false,
+          "resultKeys": [
+            "result_4d769ffc3f4b",
+            "result_b9f3e2338f23",
+            "result_50244dbbc659",
+            "result_ca05463ce2ca",
+            "result_e5e41f42ef4f",
+            "result_28a6913d5374"
+          ],
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        }
+      ],
+      "schemaVersion": 4
+    }
+  },
+  {
+    "specificationUuid": "c9624c8f-357b-473f-b358-614f5d82bb75",
+    "specificationRevisionUuid": "429b0f25-9615-424a-9761-f6b8b0508a1b",
+    "specificationRevision": 1,
+    "name": "学校心理健康测评扩展结果标准规范",
+    "status": "active",
+    "definitions": {
+      "results": [
+        {
+          "key": "result_cf9068c3ca91",
+          "name": "心理风险",
+          "valueType": "level",
+          "deprecated": false,
+          "description": "心理风险",
+          "valueSchema": {
+            "labels": {
+              "mild": "低风险",
+              "normal": "无风险",
+              "critical": "高风险",
+              "moderate": "中风险"
+            },
+            "values": [
+              "normal",
+              "mild",
+              "moderate",
+              "critical"
+            ]
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_c37a277fb97a",
+          "name": "不良行为倾向",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=无风险，2=轻度预警，3=严重预警。反映电子产品过度使用、烟酒药物接触等可能明显影响正常生活的不良行为线索。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "无风险",
+              "2": "轻度预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_7450ac483c59",
+          "name": "攻击性倾向",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=无风险，2=轻度预警，3=严重预警。反映愤怒、敌意、威胁、肢体冲突等可能伤害他人的倾向。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "无风险",
+              "2": "轻度预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_d67f06690048",
+          "name": "回避行为",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=无风险，2=轻度预警，3=严重预警。反映持续逃课、严重拖延、拒绝沟通或封闭自我等回避行为。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "无风险",
+              "2": "轻度预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_dc3cdf057d5f",
+          "name": "被霸凌风险",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=无风险，2=轻度预警，3=严重预警。反映遭遇孤立、排斥、不被同伴接纳或被霸凌的风险线索。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "无风险",
+              "2": "轻度预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_1fa1f17ecfe1",
+          "name": "自我伤害倾向",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=无风险，2=轻度预警，3=严重预警。反映在压力或痛苦下通过伤害自己缓解心理痛苦的意图或行为线索。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "无风险",
+              "2": "轻度预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_9a98f16dd025",
+          "name": "攻击性",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_50244dbbc659",
+          "name": "学习压力",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=健康，2=轻度，3=中度，4=重度，5=严重。反映学业负担、成绩焦虑、时间管理和未来发展带来的心理压力。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_ca05463ce2ca",
+          "name": "情绪不稳定",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=健康，2=轻度，3=中度，4=重度，5=严重。反映情绪波动、反应过强、易怒或难以调节情绪的程度。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_dc702e099f31",
+          "name": "孤独",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=健康，2=轻度，3=中度，4=重度，5=严重。反映与他人隔离、缺少朋友、不被理解或难以融入群体的感受。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_4d769ffc3f4b",
+          "name": "抑郁",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=健康，2=轻度，3=中度，4=重度，5=严重。反映情绪低落、兴趣减退、缺乏活力和动力等抑郁相关表现。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_e5e41f42ef4f",
+          "name": "躯体化",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "1=健康，2=轻度，3=中度，4=重度，5=严重。反映心理困扰通过头痛、腹痛、恶心或疲倦等身体不适表达的程度。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_6bf30bd3deda",
+          "name": "恐怖",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_b9f3e2338f23",
+          "name": "焦虑",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_28a6913d5374",
+          "name": "人际关系敏感",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_a1056d699674",
+          "name": "性格特质",
+          "valueType": "tag",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {}
+        },
+        {
+          "key": "result_a4eba7d96488",
+          "name": "行为习惯",
+          "valueType": "tag",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {}
+        },
+        {
+          "key": "result_4f52e6883798",
+          "name": "访谈信息质量",
+          "valueType": "choice",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "labels": {
+              "不足": "不足",
+              "中等": "中等",
+              "很高": "很高",
+              "较低": "较低",
+              "较高": "较高"
+            },
+            "values": [
+              "不足",
+              "较低",
+              "中等",
+              "较高",
+              "很高"
+            ]
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_0310e1311568",
+          "name": "给本人的总结",
+          "valueType": "text",
+          "deprecated": true,
+          "description": "",
+          "valueSchema": {},
+          "deprecationReason": "个体解释文本，不适合作为标准结果"
+        },
+        {
+          "key": "result_8e06c042f8ef",
+          "name": "给老师的总结",
+          "valueType": "text",
+          "deprecated": true,
+          "description": "",
+          "valueSchema": {},
+          "deprecationReason": "个体解释文本，不适合作为标准结果"
+        },
+        {
+          "key": "result_ac3bb706f01e",
+          "name": "适应不良",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_b3cb03cf57f0",
+          "name": "学习焦虑",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_f587fc33a49b",
+          "name": "心理失衡",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_82ee65e28b23",
+          "name": "自责",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_0f2dda9923bd",
+          "name": "对人焦虑",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_17af2055a014",
+          "name": "冲动",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_76f9a1d4a0fe",
+          "name": "多动",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_45673f07a792",
+          "name": "敌对",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_4735bbe3735b",
+          "name": "过敏",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_580d3761bd03",
+          "name": "强迫症状",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "轻度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_1b381b7a0537",
+          "name": "偏执",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_c3e57db08685",
+          "name": "保护因素",
+          "valueType": "tag",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {}
+        },
+        {
+          "key": "result_d1d7e7ebb34b",
+          "name": "抗压能力",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "labels": {
+              "0": "中等",
+              "1": "较好",
+              "2": "良好",
+              "3": "突出优势",
+              "-1": "略弱",
+              "-2": "较弱",
+              "-3": "明显薄弱"
+            },
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_7b65104d347c",
+          "name": "情绪管理",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "labels": {
+              "0": "中等",
+              "1": "较好",
+              "2": "良好",
+              "3": "突出优势",
+              "-1": "略弱",
+              "-2": "较弱",
+              "-3": "明显薄弱"
+            },
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_c53f9094c411",
+          "name": "情绪表达与识别",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "labels": {
+              "0": "中等",
+              "1": "较好",
+              "2": "良好",
+              "3": "突出优势",
+              "-1": "略弱",
+              "-2": "较弱",
+              "-3": "明显薄弱"
+            },
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_93c5dc645c72",
+          "name": "快乐与满足",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "labels": {
+              "0": "中等",
+              "1": "较好",
+              "2": "良好",
+              "3": "突出优势",
+              "-1": "略弱",
+              "-2": "较弱",
+              "-3": "明显薄弱"
+            },
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_f5863b263b77",
+          "name": "学习适应性",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "labels": {
+              "0": "中等",
+              "1": "较好",
+              "2": "良好",
+              "3": "突出优势",
+              "-1": "略弱",
+              "-2": "较弱",
+              "-3": "明显薄弱"
+            },
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_00e6202cea2c",
+          "name": "时间管理能力",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "labels": {
+              "0": "中等",
+              "1": "较好",
+              "2": "良好",
+              "3": "突出优势",
+              "-1": "略弱",
+              "-2": "较弱",
+              "-3": "明显薄弱"
+            },
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_fdc088d7f2f3",
+          "name": "学习动机",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "labels": {
+              "0": "中等",
+              "1": "较好",
+              "2": "良好",
+              "3": "突出优势",
+              "-1": "略弱",
+              "-2": "较弱",
+              "-3": "明显薄弱"
+            },
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_44122ca0f106",
+          "name": "沟通开放度",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "labels": {
+              "0": "中等",
+              "1": "较好",
+              "2": "良好",
+              "3": "突出优势",
+              "-1": "略弱",
+              "-2": "较弱",
+              "-3": "明显薄弱"
+            },
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_dd83f32255e3",
+          "name": "人际交往能力",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "labels": {
+              "0": "中等",
+              "1": "较好",
+              "2": "良好",
+              "3": "突出优势",
+              "-1": "略弱",
+              "-2": "较弱",
+              "-3": "明显薄弱"
+            },
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_5c74b8271885",
+          "name": "环境适应性",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "labels": {
+              "0": "中等",
+              "1": "较好",
+              "2": "良好",
+              "3": "突出优势",
+              "-1": "较弱",
+              "-2": "略弱",
+              "-3": "明显薄弱"
+            },
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_9fe102067cb7",
+          "name": "自我认知与自尊心",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "labels": {
+              "0": "中等",
+              "1": "较好",
+              "2": "良好",
+              "3": "突出优势",
+              "-1": "略弱",
+              "-2": "较弱",
+              "-3": "明显薄弱"
+            },
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_6e52f37cfd45",
+          "name": "未来发展规划",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "labels": {
+              "0": "中等",
+              "1": "较好",
+              "2": "良好",
+              "3": "突出优势",
+              "-1": "略弱",
+              "-2": "较弱",
+              "-3": "明显薄弱"
+            },
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "result_c6e0b9f8feea",
+          "name": "创造性思维",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "labels": {
+              "0": "中等",
+              "1": "较好",
+              "2": "良好",
+              "3": "突出优势",
+              "-1": "略弱",
+              "-2": "较弱",
+              "-3": "明显薄弱"
+            },
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        }
+      ],
+      "displayOrder": [
+        {
+          "key": "result_cf9068c3ca91",
+          "kind": "result"
+        },
+        {
+          "key": "metric_group_500b1004fc2f",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "metric_group_4680db8a2d26",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "metric_group_4413c3cf05d1",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "metric_group_2fd27d9dc8d7",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "metric_group_47752ac29b8e",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "metric_group_e0f61d221633",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "metric_group_e983c44f3951",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "result_a1056d699674",
+          "kind": "result"
+        },
+        {
+          "key": "result_a4eba7d96488",
+          "kind": "result"
+        },
+        {
+          "key": "result_0310e1311568",
+          "kind": "result"
+        },
+        {
+          "key": "result_8e06c042f8ef",
+          "kind": "result"
+        },
+        {
+          "key": "result_c3e57db08685",
+          "kind": "result"
+        },
+        {
+          "key": "result_4f52e6883798",
+          "kind": "result"
+        },
+        {
+          "key": "metric_group_cf9633209b2a",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "metric_group_b3f27084d9a8",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "metric_group_87329dbeab34",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "metric_group_790c1e90cf85",
+          "kind": "metricGroup"
+        }
+      ],
+      "metricGroups": [
+        {
+          "key": "metric_group_500b1004fc2f",
+          "name": "危机识别",
+          "deprecated": false,
+          "resultKeys": [
+            "result_c37a277fb97a",
+            "result_7450ac483c59",
+            "result_d67f06690048",
+            "result_dc3cdf057d5f",
+            "result_1fa1f17ecfe1"
+          ],
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "分",
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "metric_group_4680db8a2d26",
+          "name": "心理健康｜学习与适应问题",
+          "deprecated": false,
+          "resultKeys": [
+            "result_50244dbbc659",
+            "result_ac3bb706f01e",
+            "result_b3cb03cf57f0"
+          ],
+          "description": "学业压力、学习焦虑及对学习和学校生活的适应情况",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "metric_group_4413c3cf05d1",
+          "name": "心理健康｜情绪与心理敏感问题",
+          "deprecated": false,
+          "resultKeys": [
+            "result_b9f3e2338f23",
+            "result_4d769ffc3f4b",
+            "result_ca05463ce2ca",
+            "result_f587fc33a49b",
+            "result_82ee65e28b23",
+            "result_4735bbe3735b",
+            "result_6bf30bd3deda"
+          ],
+          "description": "负性情绪、情绪稳定性以及焦虑抑郁等内在情绪困扰",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "metric_group_2fd27d9dc8d7",
+          "name": "心理健康｜人际与社会适应问题",
+          "deprecated": false,
+          "resultKeys": [
+            "result_28a6913d5374",
+            "result_0f2dda9923bd",
+            "result_dc702e099f31"
+          ],
+          "description": "与同伴交往、社会联结、人际敏感和孤独体验",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "metric_group_47752ac29b8e",
+          "name": "心理健康｜行为与冲动调节问题",
+          "deprecated": false,
+          "resultKeys": [
+            "result_17af2055a014",
+            "result_9a98f16dd025",
+            "result_76f9a1d4a0fe",
+            "result_45673f07a792"
+          ],
+          "description": "自我控制、冲动性、外化行为和对抗性表现",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "metric_group_e0f61d221633",
+          "name": "心理健康｜身心反应",
+          "deprecated": false,
+          "resultKeys": [
+            "result_e5e41f42ef4f"
+          ],
+          "description": "心理压力或环境刺激引发的身体、心理敏感和过度反应",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "metric_group_e983c44f3951",
+          "name": "心理健康｜认知与思维困扰",
+          "deprecated": false,
+          "resultKeys": [
+            "result_580d3761bd03",
+            "result_1b381b7a0537"
+          ],
+          "description": "主要反映反复强迫性体验、过度怀疑及较僵化的认知困扰",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "metric_group_cf9633209b2a",
+          "name": "心理素质｜情绪调节与心理韧性",
+          "deprecated": false,
+          "resultKeys": [
+            "result_d1d7e7ebb34b",
+            "result_7b65104d347c",
+            "result_c53f9094c411",
+            "result_93c5dc645c72"
+          ],
+          "description": "面对压力和负面情绪时的承受、识别、调节及维持积极心理体验的能力",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "metric_group_b3f27084d9a8",
+          "name": "心理素质｜学习适应与自我管理",
+          "deprecated": false,
+          "resultKeys": [
+            "result_f5863b263b77",
+            "result_00e6202cea2c",
+            "result_fdc088d7f2f3"
+          ],
+          "description": "学生适应学习任务、管理时间以及维持学习动力的能力",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "metric_group_87329dbeab34",
+          "name": "心理素质｜人际沟通与环境适应",
+          "deprecated": false,
+          "resultKeys": [
+            "result_44122ca0f106",
+            "result_dd83f32255e3",
+            "result_5c74b8271885"
+          ],
+          "description": "与他人建立联系、表达沟通以及适应外部环境的能力",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        },
+        {
+          "key": "metric_group_790c1e90cf85",
+          "name": "心理素质｜自我认知与发展能力",
+          "deprecated": false,
+          "resultKeys": [
+            "result_9fe102067cb7",
+            "result_6e52f37cfd45",
+            "result_c6e0b9f8feea"
+          ],
+          "description": "对自我的认识、价值感，以及面向未来进行探索和发展的能力",
+          "valueSchema": {
+            "max": 3,
+            "min": -3,
+            "unit": "分",
+            "values": [
+              -3,
+              -2,
+              -1,
+              0,
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "higher_better"
+        }
+      ],
+      "schemaVersion": 4
+    }
+  },
+  {
+    "specificationUuid": "715ec7d4-cfd0-4c43-8d0e-113c67216377",
+    "specificationRevisionUuid": "f8430c91-20d8-46e4-af50-a4f48beb9893",
+    "specificationRevision": 2,
+    "name": "成人心理健康测评标准结果规范",
+    "status": "active",
+    "definitions": {
+      "results": [
+        {
+          "key": "result_026fd0539887",
+          "name": "心理风险指数",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "综合反映心理困扰、心理保护因素、职业适应和危机信号；用于支持分层与资源安排，不代表临床诊断。",
+          "valueSchema": {
+            "max": 4,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "一般关注",
+              "3": "重点关注",
+              "4": "紧急干预"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_431eb0d9c6e9",
+          "name": "抑郁",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映持续情绪低落、兴趣减退、精力下降等相关表现的程度。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_bc6c0cff1460",
+          "name": "躯体化",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映心理压力通过身体不适、疲劳或疼痛等方式表达的程度。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_b956d1278cf1",
+          "name": "强迫症状",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映反复思想、冲动或行为带来的困扰及其功能影响。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_91c29d4bcb03",
+          "name": "人际关系敏感",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映人际互动中的不安、自卑、过度敏感和消极预期。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_b70d23dbaa73",
+          "name": "焦虑",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映担忧、紧张、烦躁及相关身心反应的程度。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_393689c37acc",
+          "name": "敌意与冲突反应",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映敌意、易激惹、争执和冲突反应相关表现的程度。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_4499a0fcda30",
+          "name": "恐惧与回避",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映对特定情境、人群或活动的明显恐惧和回避程度。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_c5acc86e2f55",
+          "name": "猜疑与偏执体验",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映过度猜疑、僵化解释和被针对感等相关体验的程度。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_860628b34b00",
+          "name": "异常感知与思维体验",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映异常感知、思维紊乱或现实感减弱等相关体验线索；不代表精神疾病诊断。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_a0f5a22a1b1a",
+          "name": "职业倦怠",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映长期工作压力下的耗竭、疏离和效能下降程度。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_52c722a462b2",
+          "name": "职业价值感缺失",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映对工作意义、认可和成就感缺失的程度。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "labels": {
+              "1": "健康",
+              "2": "轻度",
+              "3": "中度",
+              "4": "重度",
+              "5": "严重"
+            },
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_1f39e9bcf802",
+          "name": "自我伤害风险",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映自我伤害或自杀相关意念、计划、行为及高风险表达线索；用于及时支持与转介，不代表临床诊断。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "级",
+            "labels": {
+              "1": "无风险",
+              "2": "轻微预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_dfaeb072bed4",
+          "name": "攻击行为风险",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映可能伤害他人或破坏环境的言语、冲动和行为风险线索。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "级",
+            "labels": {
+              "1": "无风险",
+              "2": "轻微预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_d64cdf8f4301",
+          "name": "职业倦怠风险",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映职业耗竭已明显影响工作和生活功能的风险线索。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "级",
+            "labels": {
+              "1": "无风险",
+              "2": "轻微预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "result_9fcbaa6a6d24",
+          "name": "物质依赖风险",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "反映酒精、药物或其它物质使用造成明显功能影响的风险线索。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "级",
+            "labels": {
+              "1": "无风险",
+              "2": "轻微预警",
+              "3": "严重预警"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        }
+      ],
+      "displayOrder": [
+        {
+          "key": "result_026fd0539887",
+          "kind": "result"
+        },
+        {
+          "key": "metric_group_c2bf6163f6cf",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "metric_group_653ae3bda25c",
+          "kind": "metricGroup"
+        },
+        {
+          "key": "metric_group_feacdcaa4df1",
+          "kind": "metricGroup"
+        }
+      ],
+      "metricGroups": [
+        {
+          "key": "metric_group_c2bf6163f6cf",
+          "name": "危机与安全风险",
+          "deprecated": false,
+          "resultKeys": [
+            "result_1f39e9bcf802",
+            "result_dfaeb072bed4",
+            "result_d64cdf8f4301",
+            "result_9fcbaa6a6d24"
+          ],
+          "description": "用于识别需要及时支持、专业评估或转介的风险线索。",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "unit": "级",
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "metric_group_653ae3bda25c",
+          "name": "核心心理健康",
+          "deprecated": false,
+          "resultKeys": [
+            "result_431eb0d9c6e9",
+            "result_b70d23dbaa73",
+            "result_bc6c0cff1460",
+            "result_b956d1278cf1",
+            "result_91c29d4bcb03",
+            "result_393689c37acc",
+            "result_4499a0fcda30",
+            "result_c5acc86e2f55",
+            "result_860628b34b00"
+          ],
+          "description": "成年人常见心理困扰及其对日常功能的影响。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        },
+        {
+          "key": "metric_group_feacdcaa4df1",
+          "name": "工作与职业适应",
+          "deprecated": false,
+          "resultKeys": [
+            "result_a0f5a22a1b1a",
+            "result_52c722a462b2"
+          ],
+          "description": "工作压力背景下的职业耗竭与价值感体验。",
+          "valueSchema": {
+            "max": 5,
+            "min": 1,
+            "unit": "分",
+            "values": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        }
+      ],
+      "schemaVersion": 4
+    }
+  },
+  {
+    "specificationUuid": "9951024a-9e05-47da-9fc8-136809789af1",
+    "specificationRevisionUuid": "afbd966b-83c5-44bf-bf9d-4269fd682835",
+    "specificationRevision": 1,
+    "name": "海淀民政福利院测评风险等级",
+    "status": "active",
+    "definitions": {
+      "results": [
+        {
+          "key": "result_9ea1811cf790",
+          "name": "综合心理风险指数",
+          "valueType": "number",
+          "deprecated": false,
+          "description": "",
+          "valueSchema": {
+            "max": 3,
+            "min": 1,
+            "labels": {
+              "1": "低风险",
+              "2": "中风险",
+              "3": "高风险"
+            },
+            "values": [
+              1,
+              2,
+              3
+            ],
+            "numberKind": "discrete"
+          },
+          "scoreDirection": "lower_better"
+        }
+      ],
+      "displayOrder": [
+        {
+          "key": "result_9ea1811cf790",
+          "kind": "result"
+        }
+      ],
+      "metricGroups": [],
+      "schemaVersion": 4
+    }
+  }
+]

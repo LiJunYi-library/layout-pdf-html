@@ -1,0 +1,84 @@
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f3f4f6; font-family: "PingFang SC", "Microsoft YaHei", sans-serif; }
+  .tpl-page { position: relative; width: 210mm; min-height: 297mm; margin: 16px auto; background: #ffffff; padding: 12mm; box-shadow: 0 1px 8px rgba(0,0,0,.15); }
+  .tpl-page-tag { display: none; }
+  @media print {
+    body { background: #ffffff; }
+    .tpl-page { margin: 0; box-shadow: none; page-break-after: always; }
+  }
+  .tpl-text { margin: 0; line-height: 1.8; white-space: pre-wrap; }
+  .tpl-card { border: 1px solid #e5e7eb; border-radius: 8px; background: #ffffff; padding: 12px; }
+  .tpl-card-title { text-align: center; font-size: 14px; font-weight: bold; color: #2563eb; }
+  .tpl-chart svg { display: block; margin: 0 auto; max-width: 100%; }
+  .tpl-stat-card { border: 1px solid #e5e7eb; border-radius: 8px; background: #ffffff; padding: 16px; text-align: center; }
+  .tpl-stat-title { font-size: 13px; color: #6b7280; }
+  .tpl-stat-value { font-size: 32px; font-weight: bold; color: #2563eb; margin: 6px 0; }
+  .tpl-stat-note { font-size: 11px; color: #6b7280; }
+  .tpl-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .tpl-table th, .tpl-table td { border: 1px solid #e5e7eb; padding: 6px 10px; text-align: center; }
+  .tpl-table th { background: #eff6ff; color: #1e3a5f; }
+  .tpl-stat-row { display: flex; gap: 12px; }
+  .tpl-stat-row .tpl-stat-card { flex: 1; min-width: 0; }
+  .tpl-info-line { display: flex; align-items: center; gap: 10px; }
+  .tpl-info-icon { width: 36px; height: 36px; flex-shrink: 0; border-radius: 50%; background: #eff6ff; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+  .tpl-info-label { font-weight: bold; color: #1e3a5f; font-size: 14px; }
+  .tpl-info-value { color: #374151; font-size: 14px; }
+  .tpl-stat-icon { width: 40px; height: 40px; margin: 0 auto 6px; border-radius: 50%; background: #eff6ff; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .tpl-cols { display: flex; align-items: stretch; }
+  .tpl-cols > div { min-width: 0; }
+  .tpl-spacer-tag { display: none; }
+</style>
+<script>window.__DATA__ = {{ data | tojson }}</script>
+<script>
+window.__runBind = function (block, code) {
+  if (!block || window.__DATA__ === undefined) return
+  var out
+  try { out = new Function('data', code)(window.__DATA__) } catch (e) { return }
+  if (!out || typeof out !== 'object') return
+  var type = block.getAttribute('data-component')
+  function q(sel) { return block.querySelector(sel) }
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]
+    })
+  }
+  if ((type === 'text' || type === 'heading') && out.content != null) {
+    var t = q('.tpl-text'); if (t) t.textContent = out.content
+  } else if (type === 'stat-card') {
+    if (out.value != null) { var v = q('.tpl-stat-value'); if (v) v.textContent = out.value }
+    if (out.note != null) { var n = q('.tpl-stat-note'); if (n) n.textContent = out.note }
+  } else if (type === 'info-line' && out.value != null) {
+    var iv = q('.tpl-info-value'); if (iv) iv.textContent = out.value
+  } else if (type === 'stat-group' && Array.isArray(out.items)) {
+    var row = q('.tpl-stat-row')
+    if (row) {
+      row.innerHTML = out.items.map(function (it) {
+        return '<div class="tpl-stat-card">'
+          + (it.icon ? '<div class="tpl-stat-icon">' + esc(it.icon) + '</div>' : '')
+          + '<div class="tpl-stat-title">' + esc(it.title || '') + '</div>'
+          + '<div class="tpl-stat-value">' + esc(it.value || '') + '</div>'
+          + (it.note ? '<div class="tpl-stat-note">' + esc(it.note) + '</div>' : '')
+          + '</div>'
+      }).join('')
+    }
+  } else if (type === 'data-table') {
+    var table = q('.tpl-table')
+    if (table) {
+      try {
+        var heads = out.headers ? String(out.headers).split(/[,，]/).map(function (h) { return h.trim() }).filter(Boolean) : null
+        var rows = out.rowsJson ? JSON.parse(out.rowsJson) : null
+        if (heads) {
+          table.querySelector('thead').innerHTML = '<tr>' + heads.map(function (h) { return '<th>' + esc(h) + '</th>' }).join('') + '</tr>'
+        }
+        if (Array.isArray(rows)) {
+          table.querySelector('tbody').innerHTML = rows.map(function (r) {
+            return '<tr>' + r.map(function (c) { return '<td>' + esc(c) + '</td>' }).join('') + '</tr>'
+          }).join('')
+        }
+      } catch (e) { /* rowsJson 非法时保留静态表 */ }
+    }
+  }
+}
+</script>
+<div class="page-canvas"><div><div class="tpl-block" data-component="page" data-source="无（页面容器）" data-map="一个 A4 页（210mm×297mm），打印时独占一页" style="margin-top:0;margin-right:0;margin-bottom:16px;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="tpl-page"><div class="tpl-page-tag">第 1 页</div><div><div class="tpl-block" data-component="stat-group" data-source="" data-map="" style="margin-top:0;margin-right:0;margin-bottom:16px;margin-left:0;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0"><div class="tpl-stat-row"><div class="tpl-stat-card"><div class="tpl-stat-icon">👥</div><div class="tpl-stat-title">录入人数</div><div class="tpl-stat-value">1,535</div></div><div class="tpl-stat-card"><div class="tpl-stat-icon">✅</div><div class="tpl-stat-title">完成人数</div><div class="tpl-stat-value">707</div></div><div class="tpl-stat-card"><div class="tpl-stat-icon">📝</div><div class="tpl-stat-title">未完成人数</div><div class="tpl-stat-value">828</div></div><div class="tpl-stat-card"><div class="tpl-stat-icon">📈</div><div class="tpl-stat-title">完成率</div><div class="tpl-stat-value">46.1%</div></div><div class="tpl-stat-card"><div class="tpl-stat-icon">❌</div><div class="tpl-stat-title">未完成率</div><div class="tpl-stat-value">53.9%</div></div></div></div></div></div></div></div></div>
