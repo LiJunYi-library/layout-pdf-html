@@ -1,5 +1,5 @@
 import type { TableContent } from "../../types";
-
+const str = "var a = 5; console.log(a)"
 // 组件 B：静态表格，只按 colWidths 渲染，不可拖拽（导出 HTML 用）
 export function TableCard({ id, content }: { id: string; content: TableContent }) {
   return (
@@ -27,6 +27,7 @@ export function TableCard({ id, content }: { id: string; content: TableContent }
           ))}
         </tbody>
       </table>
+       <script>{str}</script>
     </div>
   );
 }

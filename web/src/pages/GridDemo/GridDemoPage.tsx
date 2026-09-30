@@ -1,99 +1,18 @@
 // React-Grid-Layout 试验页（/grid-demo）：多页面 + 组件拖入 + 选中配置 + 导出静态 HTML
 // 表格采用 A/B 双组件：编辑用 TableCardEdit（列宽可拖拽），导出用 TableCard（只读列宽数据）
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import ReactGridLayout, {
-  useContainerWidth,
-  type Layout,
-  type LayoutItem,
-} from "react-grid-layout";
-import "react-grid-layout/css/styles.css";
+import type { LayoutItem } from "react-grid-layout";
 import { v7 as uuidV7 } from "uuid";
-import type { Content, TableContent } from "./types";
+import type { Content, PageData } from "./types";
+import { COLS, MARGIN, ROW_HEIGHT } from "./grid";
+import { paletteDefs, paletteTree, type PaletteDef } from "./palette";
+import { renderStaticContent } from "./renderContent";
+import { PageEditor } from "./PageEditor";
 import { cardCss } from "./cardCss";
 import "./GridDemoPage.scss";
-import { StatCard } from "./components/StatCard/StatCard";
-import { ChartCard } from "./components/ChartCard/ChartCard";
-import { TextCard } from "./components/TextCard/TextCard";
-import { TableCard } from "./components/TableCard/TableCard";
-import { TableCardEdit } from "./components/TableCard/TableCard.edit";
 import { TableCardConfig } from "./components/TableCard/TableCard.config";
 import { BaseCardConfig } from "./components/BaseCard/BaseCard.config";
-import { statCardDefault } from "./components/StatCard/StatCard.default.config";
-import { chartCardDefault } from "./components/ChartCard/ChartCard.default.config";
-import { textCardDefault } from "./components/TextCard/TextCard.default.config";
-import { tableCardDefault } from "./components/TableCard/TableCard.default.config";
-
-// 组件栏条目：默认 layout + 默认 content，来自各组件的 .default.config
-interface PaletteDef {
-  layout: Omit<LayoutItem, "i" | "x" | "y">;
-  content: Content;
-}
-
-const paletteDefs: PaletteDef[] = [
-  statCardDefault,
-  chartCardDefault,
-  textCardDefault,
-  tableCardDefault,
-];
-
-// 按 componentCategory 分组为两级树：分类 → 组件
-const paletteTree: Array<[string, PaletteDef[]]> = [];
-for (const def of paletteDefs) {
-  const group = paletteTree.find(
-    ([category]) => category === def.content.componentCategory,
-  );
-  if (group) group[1].push(def);
-  else paletteTree.push([def.content.componentCategory, [def]]);
-}
-
-// 编辑器渲染：表格用组件 A（可拖拽列宽）
-function renderEditorContent(
-  id: string,
-  content: Content,
-  onTableChange: (next: TableContent) => void,
-) {
-  switch (content.componentType) {
-    case "stat":
-      return <StatCard id={id} content={content} />;
-    case "chart":
-      return <ChartCard id={id} content={content} />;
-    case "text":
-      return <TextCard id={id} content={content} />;
-    case "table":
-      return (
-        <TableCardEdit
-          id={id}
-          content={content}
-          onColWidthsChange={(colWidths) =>
-            onTableChange({ ...content, colWidths })
-          }
-        />
-      );
-  }
-}
-
-// 导出渲染：表格用组件 B（静态，只读 colWidths）
-function renderStaticContent(id: string, content: Content) {
-  switch (content.componentType) {
-    case "stat":
-      return <StatCard id={id} content={content} />;
-    case "chart":
-      return <ChartCard id={id} content={content} />;
-    case "text":
-      return <TextCard id={id} content={content} />;
-    case "table":
-      return <TableCard id={id} content={content} />;
-  }
-}
-
-// ---- 多页面数据模型 ----
-
-interface PageData {
-  id: string;
-  layout: LayoutItem[];
-  contents: Record<string, Content>;
-}
 
 // 初始条目：布局与内容成对定义，id 统一用 uuidV7 生成
 const initialEntries: Array<{
@@ -170,13 +89,10 @@ function makeInitialPage(): PageData {
   };
 }
 
-// 与 RGL 内部 calcGridItemPosition 一致的坐标换算
-const COLS = 12;
-const ROW_HEIGHT = 40;
-const MARGIN = 10;
 // A4 @96dpi 兜底宽度（导出时若页面尚未测量到宽度则用它）
 const PAGE_WIDTH_FALLBACK = 794;
 
+// 与 RGL 内部 calcGridItemPosition 一致的坐标换算
 function itemToPixels(item: LayoutItem, containerWidth: number) {
   const colWidth = (containerWidth - MARGIN * (COLS - 1) - MARGIN * 2) / COLS;
   const left = Math.round((colWidth + MARGIN) * item.x + MARGIN);
@@ -248,114 +164,6 @@ function download(filename: string, content: string) {
   a.download = filename;
   a.click();
   URL.revokeObjectURL(url);
-}
-
-// ---- 单页编辑器：一页一个 RGL ----
-
-function PageEditor({
-  page,
-  selectedItemId,
-  draggingType,
-  setDraggingType,
-  onLayoutChange,
-  onDropComponent,
-  onSelectItem,
-  onRemoveItem,
-  onContentChange,
-  onWidthChange,
-}: {
-  page: PageData;
-  selectedItemId: string | null;
-  draggingType: string | null;
-  setDraggingType: (t: string | null) => void;
-  onLayoutChange: (layout: Layout) => void;
-  onDropComponent: (type: string, position: { x: number; y: number }) => void;
-  onSelectItem: (itemId: string) => void;
-  onRemoveItem: (itemId: string) => void;
-  onContentChange: (itemId: string, next: Content) => void;
-  onWidthChange: (width: number) => void;
-}) {
-  const { width, containerRef, mounted } = useContainerWidth();
-
-  useEffect(() => {
-    if (mounted && width) onWidthChange(width);
-  }, [mounted, width, onWidthChange]);
-
-  return (
-    <div ref={containerRef} className="canvas">
-      {mounted && (
-        <ReactGridLayout
-          layout={page.layout}
-          width={width}
-          gridConfig={{ cols: COLS, rowHeight: ROW_HEIGHT }}
-          dragConfig={{ enabled: true }}
-          resizeConfig={{ enabled: true }}
-          dropConfig={{
-            enabled: true,
-            defaultItem: { w: 3, h: 3 },
-            onDragOver: () => {
-              const def = paletteDefs.find(
-                (d) => d.content.componentType === draggingType,
-              );
-              return def ? { w: def.layout.w, h: def.layout.h } : undefined;
-            },
-          }}
-          onDrop={(_newLayout, item, e) => {
-            const payload =
-              (e as DragEvent).dataTransfer?.getData("text/plain") ?? "";
-            const type = payload.startsWith("component:")
-              ? payload.slice("component:".length)
-              : draggingType;
-            if (type && item) onDropComponent(type, { x: item.x, y: item.y });
-            setDraggingType(null);
-          }}
-          onLayoutChange={onLayoutChange}
-        >
-          {page.layout.map((item) => (
-            <div
-              key={item.i}
-              onClick={() => onSelectItem(item.i)}
-              style={{
-                background: item.static ? "#d9d9d9" : "#fff",
-                border:
-                  item.i === selectedItemId
-                    ? "2px solid #5470c6"
-                    : "1px solid #ddd",
-                borderRadius: 6,
-                overflow: "hidden",
-              }}
-            >
-              {renderEditorContent(item.i, page.contents[item.i], (next) =>
-                onContentChange(item.i, next),
-              )}
-              <button
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  right: 0,
-                  width: "18px",
-                  height: "18px",
-                  background: "#fd6666",
-                  borderRadius: "50%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  color: "white",
-                  padding: 0,
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRemoveItem(item.i);
-                }}
-              >
-                ×
-              </button>
-            </div>
-          ))}
-        </ReactGridLayout>
-      )}
-    </div>
-  );
 }
 
 export function GridDemoPage() {

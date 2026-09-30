@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import type { TableContent } from "../../types";
 
+const str = "var a = 5; console.log(a)"
+
 // 组件 A：可编辑表格，列边界可拖拽调整宽度，结果写回 colWidths（编辑器用）
 export function TableCardEdit({
   id,
@@ -71,6 +73,7 @@ export function TableCardEdit({
           ))}
         </tbody>
       </table>
+      <script>{str}</script>
     </div>
   );
 }

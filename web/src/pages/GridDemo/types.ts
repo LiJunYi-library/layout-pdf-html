@@ -1,4 +1,6 @@
 // GridDemo 共享类型
+import type { LayoutItem } from "react-grid-layout";
+
 export interface TableProps {
   columns: string[]
   rows: string[][]
@@ -27,3 +29,10 @@ export type StatContent = Extract<Content, { componentType: 'stat' }>
 export type ChartContent = Extract<Content, { componentType: 'chart' }>
 export type TextContent = Extract<Content, { componentType: 'text' }>
 export type TableContent = Extract<Content, { componentType: 'table' }>
+
+/** 单页数据：一页一套 layout + contents */
+export interface PageData {
+  id: string
+  layout: LayoutItem[]
+  contents: Record<string, Content>
+}
