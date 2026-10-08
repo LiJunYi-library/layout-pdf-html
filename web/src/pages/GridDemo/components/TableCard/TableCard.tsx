@@ -1,7 +1,16 @@
+import type { ReactNode } from "react";
 import type { TableContent } from "../../types";
-const str = "var a = 5; console.log(a)"
+
 // 组件 B：静态表格，只按 colWidths 渲染，不可拖拽（导出 HTML 用）
-export function TableCard({ id, content }: { id: string; content: TableContent }) {
+export function TableCard({
+  id,
+  content,
+  children,
+}: {
+  id: string;
+  content: TableContent;
+  children?: ReactNode;
+}) {
   return (
     <div className="card-body" data-id={id} data-name={content.name} data-type={content.componentType}>
       <table className="card-table">
@@ -27,7 +36,7 @@ export function TableCard({ id, content }: { id: string; content: TableContent }
           ))}
         </tbody>
       </table>
-       <script>{str}</script>
+      {children}
     </div>
   );
 }

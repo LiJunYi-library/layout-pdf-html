@@ -1,6 +1,15 @@
+import type { ReactNode } from "react";
 import type { ChartContent } from "../../types";
 
-export function ChartCard({ id, content }: { id: string; content: ChartContent }) {
+export function ChartCard({
+  id,
+  content,
+  children,
+}: {
+  id: string;
+  content: ChartContent;
+  children?: ReactNode;
+}) {
   const max = Math.max(...content.data);
   return (
     <div className="card-body" data-id={id} data-name={content.name} data-type={content.componentType}>
@@ -20,6 +29,7 @@ export function ChartCard({ id, content }: { id: string; content: ChartContent }
           />
         ))}
       </svg>
+      {children}
     </div>
   );
 }

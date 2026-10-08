@@ -1,17 +1,17 @@
-import { useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import type { TableContent } from "../../types";
-
-const str = "var a = 5; console.log(a)"
 
 // 组件 A：可编辑表格，列边界可拖拽调整宽度，结果写回 colWidths（编辑器用）
 export function TableCardEdit({
   id,
   content,
   onColWidthsChange,
+  children,
 }: {
   id: string;
   content: TableContent;
   onColWidthsChange: (next: number[]) => void;
+  children?: ReactNode;
 }) {
   const tableRef = useRef<HTMLTableElement>(null);
   const { columns, rows, colWidths } = content;
@@ -73,7 +73,7 @@ export function TableCardEdit({
           ))}
         </tbody>
       </table>
-      <script>{str}</script>
+      {children}
     </div>
   );
 }

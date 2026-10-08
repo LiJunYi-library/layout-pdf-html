@@ -17,9 +17,10 @@ interface BaseContent {
   componentName: string
   /** 自定义名，用户在配置面板可改，不渲染到页面上 */
   name: string
-  /** LLM 生成的脚本代码：编辑态 new Function 执行，导出态内联 <script> */
+  /** LLM 生成的脚本代码：编辑态 new Function('root','data') 执行，导出态内联 <script>；
+   *  root 均为本组件的 card-body（[data-id] 节点），data 编辑态取 data.json、导出态取 window.__DATA */
   script?: string
-  /** LLM 生成的样式代码：导出态内联 <style> */
+  /** LLM 生成的样式代码：编辑态/导出态都作为 <style> 内联在 card-body 内 */
   style?: string
 }
 

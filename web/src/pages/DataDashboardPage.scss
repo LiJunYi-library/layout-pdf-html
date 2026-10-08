@@ -1,0 +1,121 @@
+// 数据看板页面样式
+.data-dashboard-page {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+
+  .muted {
+    color: #888;
+  }
+
+  .data-source {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 16px;
+  }
+
+  .data-section {
+    margin-bottom: 32px;
+
+    .section-title {
+      font-size: 18px;
+      border-left: 4px solid #5470c6;
+      padding-left: 8px;
+      margin: 0 0 12px;
+    }
+  }
+
+  .data-subsection {
+    margin: 12px 0;
+  }
+
+  .data-table {
+    border-collapse: collapse;
+    font-size: 13px;
+    background: #fff;
+
+    th, td {
+      border: 1px solid #e0e0e0;
+      padding: 6px 12px;
+      text-align: left;
+    }
+
+    thead th {
+      background: #f0f0f0;
+    }
+
+    &.kv th {
+      background: #f7f7f7;
+      font-weight: 500;
+      white-space: nowrap;
+      color: #555;
+    }
+  }
+
+  // 2 级表格：分类列合并单元格，项目列弱化
+  .two-level {
+    .col-category {
+      width: 140px;
+    }
+
+    .col-item {
+      width: 160px;
+    }
+
+    tbody th {
+      background: #f7f7f7;
+      font-weight: 500;
+      color: #555;
+      vertical-align: top;
+    }
+
+    .sub-key {
+      color: #555;
+      white-space: nowrap;
+    }
+
+    .nested-cell {
+      padding: 8px;
+      background: #fafafa;
+    }
+  }
+
+  .nested-table {
+    width: 100%;
+
+    tbody th {
+      background: #f7f7f7;
+      font-weight: 500;
+      color: #555;
+      vertical-align: top;
+      word-break: break-all;
+    }
+
+    td {
+      vertical-align: top;
+      word-break: break-all;
+    }
+  }
+
+  .data-list {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 13px;
+    color: #333;
+
+    li {
+      margin: 4px 0;
+    }
+  }
+
+  .data-raw {
+    background: #f0f0f0;
+    padding: 12px;
+    border-radius: 8px;
+    overflow: auto;
+    font-size: 12px;
+  }
+}

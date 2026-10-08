@@ -10,6 +10,7 @@ export function RootLayout() {
           <Link to="/layout" activeProps={{ className: 'nav-active' }}>布局预览</Link>
           <Link to="/file-test" activeProps={{ className: 'nav-active' }}>文件测试</Link>
           <Link to="/grid-demo" activeProps={{ className: 'nav-active' }}>Grid Demo</Link>
+          <Link to="/data-dashboard" activeProps={{ className: 'nav-active' }}>数据看板</Link>
         </nav>
       </header>
       <Outlet />

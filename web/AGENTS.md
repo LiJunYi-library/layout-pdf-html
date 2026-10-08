@@ -33,6 +33,6 @@ src/pages/XxxPage/
 
 - **编辑与静态分离**：交互逻辑只存在于 `.edit` 组件；静态组件必须是纯渲染，保证 `renderToStaticMarkup` 可序列化导出。
 - **数据即配置**：组件不私有持有业务数据，全部通过 props 传入；编辑结果通过回调写回上层 state（如 GridDemo 的 `contents`）。
-- **统一 props 签名**：卡片组件接收 `{ id, content }` 两个 prop——`id` 是布局条目 id（layout 里的 `i`），`content` 是该条目的完整内容对象，组件内部自行取用字段。
+- **统一 props 签名**：卡片组件接收 `{ id, content }` 两个 prop——`id` 是布局条目 id（layout 里的 `i`），`content` 是该条目的完整内容对象，组件内部自行取用字段；另接受可选 `children`（`content.script` / `content.style` 的注入点），必须渲染在 `.card-body` 内部末尾。
 - **根节点挂数据属性**：每个卡片组件的根节点（`.card-body`）必须挂 `data-id={id}`、`data-name={content.name}` 和 `data-type={content.componentType}`。渲染和导出共用同一套组件，导出的 HTML 里凭 `[data-id]` 即可定位任意组件实例、`[data-type]` 可区分组件类型，供后续注入数据/后处理使用。
 - 参考实现：`src/pages/GridDemo/`。

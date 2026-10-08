@@ -1,6 +1,7 @@
 // React-Grid-Layout 试验页（/grid-demo）：多页面 + 组件拖入 + 选中配置 + 导出静态 HTML
 // 表格采用 A/B 双组件：编辑用 TableCardEdit（列宽可拖拽），导出用 TableCard（只读列宽数据）
 import { useEffect, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { v7 as uuidV7 } from "uuid";
 import type { Content, PageData } from "./types";
 import { paletteDefs, paletteTree, type PaletteDef } from "./palette";
@@ -221,6 +222,9 @@ export function GridDemoPage() {
       <div className="grid-demo-page">
         <style>{cardCss}</style>
         <header className="grid-demo-page-header">
+          <Link to="/data-dashboard">
+            <button>查看数据</button>
+          </Link>
           {isFsSupported() && (
             <button onClick={handlePickDirectory} disabled={dirReady}>
               {dirReady
@@ -364,6 +368,7 @@ export function GridDemoPage() {
                     onWidthChange={(w) => {
                       pageWidths.current[page.id] = w;
                     }}
+                    data={dataJson}
                   />
                 </div>
               ))}

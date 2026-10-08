@@ -1,5 +1,6 @@
 import { createRootRoute, createRoute, createRouter } from '@tanstack/react-router'
 import { RootLayout } from './components/RootLayout'
+import { DataDashboardPage } from './pages/DataDashboardPage'
 import { DocumentsPage } from './pages/DocumentsPage'
 import { FileTestPage } from './pages/FileTestPage'
 import { GridDemoPage } from './pages/GridDemo/GridDemoPage'
@@ -42,7 +43,13 @@ const gridDemoRoute = createRoute({
   component: GridDemoPage,
 })
 
-const routeTree = rootRoute.addChildren([documentsRoute, layoutRoute, fileTestRoute, moveRoute, gridDemoRoute])
+const dataDashboardRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/data-dashboard',
+  component: DataDashboardPage,
+})
+
+const routeTree = rootRoute.addChildren([documentsRoute, layoutRoute, fileTestRoute, moveRoute, gridDemoRoute, dataDashboardRoute])
 
 export const router = createRouter({ routeTree })
 

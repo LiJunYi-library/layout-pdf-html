@@ -21,6 +21,7 @@ export function PageEditor({
   onRemoveItem,
   onContentChange,
   onWidthChange,
+  data,
 }: {
   page: PageData;
   selectedItemId: string | null;
@@ -32,6 +33,8 @@ export function PageEditor({
   onRemoveItem: (itemId: string) => void;
   onContentChange: (itemId: string, next: Content) => void;
   onWidthChange: (width: number) => void;
+  /** data.json 内容，作为 content.script 执行时的 data 参数 */
+  data: unknown;
 }) {
   const { width, containerRef, mounted } = useContainerWidth();
 
@@ -83,7 +86,7 @@ export function PageEditor({
               }}
             >
               {renderEditorContent(item.i, page.contents[item.i], (next) =>
-                onContentChange(item.i, next),
+                onContentChange(item.i, next), data,
               )}
               <button
                 style={{
