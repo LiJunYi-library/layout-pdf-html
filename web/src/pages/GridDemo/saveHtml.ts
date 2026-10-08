@@ -65,7 +65,7 @@ export function saveHtml(
       .filter(Boolean)
       .join(";");
     return `  <div class="page" style="${bgStyle}">
-    <div class="grid-container" style="width:${containerWidth}px;height:${containerHeight}px">
+    <div class="grid-layout" style="width:${containerWidth}px;height:${containerHeight}px">
 ${items.join("\n")}
     </div>
   </div>`;

@@ -72,23 +72,20 @@ export function PageEditor({
           {page.layout.map((item) => (
             <div
               key={item.i}
+              className={item.static ? "is-static" : undefined}
               onClick={(e) => {
                 e.stopPropagation(); // 阻止冒泡到 .page，避免组件选中后立即被页面点击清空
                 onSelectItem(item.i);
               }}
               style={{
-                background: item.static ? "#d9d9d9" : "#fff",
                 border:
-                  item.i === selectedItemId
-                    ? "2px solid #5470c6"
-                    : "1px solid #ddd",
-                borderRadius: 6,
-                overflow: "hidden",
+                  item.i === selectedItemId ? "2px solid #5470c6" : undefined,
               }}
             >
               {renderEditorContent(item.i, page.contents[item.i], (next) =>
                 onContentChange(item.i, next),
-              )}              <button
+              )}
+              <button
                 style={{
                   position: "absolute",
                   top: 0,

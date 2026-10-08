@@ -1,10 +1,10 @@
 // 卡片样式：页面 <style> 注入与导出 HTML 共用同一份
 export const cardCss = `
   body { margin: 0; font-family: system-ui, sans-serif; }
-  .grid-container { position: relative; margin: 0 auto; background: #f5f5f5; }
-  .grid-item { position: absolute; box-sizing: border-box; background: #fff;
+  .react-grid-layout, .grid-layout { position: relative; margin: 0 auto; }
+  .react-grid-item, .grid-item { position: absolute; box-sizing: border-box; background: #fff;
     border: 1px solid #ddd; border-radius: 6px; overflow: hidden; }
-  .grid-item.is-static { background: #d9d9d9; }
+  .react-grid-item.is-static, .grid-item.is-static { background: #d9d9d9; }
   .card-body { padding: 8px; height: 100%; box-sizing: border-box; overflow: auto; }
   .stat-value { font-size: 32px; font-weight: 700; margin-top: 8px; }
   .card-text { font-size: 13px; color: #333; margin: 0; }
