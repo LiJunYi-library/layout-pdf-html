@@ -1,14 +1,24 @@
 // React-Grid-Layout 试验页（/grid-demo）：多页面 + 组件拖入 + 选中配置 + 导出静态 HTML
 // 表格采用 A/B 双组件：编辑用 TableCardEdit（列宽可拖拽），导出用 TableCard（只读列宽数据）
-import { useRef, useState } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
+import { useEffect, useRef, useState } from "react";
 import type { LayoutItem } from "react-grid-layout";
 import { v7 as uuidV7 } from "uuid";
 import type { Content, PageData } from "./types";
-import { COLS, MARGIN, ROW_HEIGHT } from "./grid";
 import { paletteDefs, paletteTree, type PaletteDef } from "./palette";
-import { renderStaticContent } from "./renderContent";
+import { saveHtml, PAGE_WIDTH_FALLBACK } from "./saveHtml";
 import { PageEditor } from "./PageEditor";
+import {
+  isFsSupported,
+  pickRootDirectory,
+  readJsonFromLocal,
+  restoreDirectory,
+  requestStoredPermission,
+  localFileUrl,
+  writeFileToLocal,
+  writeJsonToLocal,
+  writeTextToLocal,
+  type RestoreResult,
+} from "./localFs";
 import { cardCss } from "./cardCss";
 import "./GridDemoPage.scss";
 import { TableCardConfig } from "./components/TableCard/TableCard.config";
@@ -89,83 +99,6 @@ function makeInitialPage(): PageData {
   };
 }
 
-// A4 @96dpi 兜底宽度（导出时若页面尚未测量到宽度则用它）
-const PAGE_WIDTH_FALLBACK = 794;
-
-// 与 RGL 内部 calcGridItemPosition 一致的坐标换算
-function itemToPixels(item: LayoutItem, containerWidth: number) {
-  const colWidth = (containerWidth - MARGIN * (COLS - 1) - MARGIN * 2) / COLS;
-  const left = Math.round((colWidth + MARGIN) * item.x + MARGIN);
-  const top = Math.round((ROW_HEIGHT + MARGIN) * item.y + MARGIN);
-  let width = Math.round(colWidth * item.w + Math.max(0, item.w - 1) * MARGIN);
-  let height = Math.round(
-    ROW_HEIGHT * item.h + Math.max(0, item.h - 1) * MARGIN,
-  );
-  width +=
-    Math.round((colWidth + MARGIN) * (item.x + item.w) + MARGIN) -
-    left -
-    width -
-    MARGIN;
-  height +=
-    Math.round((ROW_HEIGHT + MARGIN) * (item.y + item.h) + MARGIN) -
-    top -
-    height -
-    MARGIN;
-  return { left, top, width, height };
-}
-
-// 导出静态 HTML：每页一个 .page 容器，打印时按页分页
-function exportHtml(pages: PageData[], widthOf: (pageId: string) => number) {
-  const pagesHtml = pages.map((page) => {
-    const containerWidth = widthOf(page.id);
-    const items = page.layout.map((item) => {
-      const { left, top, width, height } = itemToPixels(item, containerWidth);
-      const inner = renderToStaticMarkup(
-        renderStaticContent(item.i, page.contents[item.i]),
-      );
-      return `      <div class="grid-item" style="left:${left}px;top:${top}px;width:${width}px;height:${height}px">${inner}</div>`;
-    });
-    const containerHeight = page.layout.length
-      ? Math.max(
-          ...page.layout.map((item) => {
-            const { top, height } = itemToPixels(item, containerWidth);
-            return top + height;
-          }),
-        ) + MARGIN
-      : 0;
-    return `  <div class="page">
-    <div class="grid-container" style="width:${containerWidth}px;height:${containerHeight}px">
-${items.join("\n")}
-    </div>
-  </div>`;
-  });
-  const pageCss = `
-  .page { width: 210mm; min-height: 297mm; margin: 0 auto 16px; background: #fff;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.15); box-sizing: border-box; }
-  @media print { .page { page-break-after: always; margin: 0; box-shadow: none; } }
-`;
-  return `<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8">
-<title>导出的布局</title>
-<style>${cardCss}${pageCss}</style>
-</head>
-<body>
-${pagesHtml.join("\n")}
-</body>
-</html>`;
-}
-
-function download(filename: string, content: string) {
-  const url = URL.createObjectURL(new Blob([content], { type: "text/html" }));
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
 export function GridDemoPage() {
   const [pages, setPages] = useState<PageData[]>(() => [makeInitialPage()]);
   const [selected, setSelected] = useState<{
@@ -180,9 +113,82 @@ export function GridDemoPage() {
   const [draggingPageId, setDraggingPageId] = useState<string | null>(null);
   // 各页面测得的实际像素宽度，导出 HTML 用
   const pageWidths = useRef<Record<string, number>>({});
+  // 本地文件夹授权状态（none 未授权 / prompt 待确认 / granted 已授权）+ data.json（编辑器用数据）
+  const [dirState, setDirState] = useState<RestoreResult>("none");
+  const [dataJson, setDataJson] = useState<unknown>(null);
+  const dirReady = dirState === "granted";
+  // 本地图片路径 → blob URL（编辑器显示背景图用）
+  const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
+
+  // 授权后：把 pages 里引用的背景图解析成 blob URL
+  useEffect(() => {
+    if (!dirReady) return;
+    for (const page of pages) {
+      const path = page.config?.backgroundImage;
+      if (path && !imageUrls[path]) {
+        void localFileUrl(path).then((url) => {
+          if (url) setImageUrls((prev) => ({ ...prev, [path]: url }));
+        });
+      }
+    }
+  }, [pages, dirReady, imageUrls]);
+
+  // 页面加载：从 IndexedDB 恢复目录 handle；已授权则直接可用
+  useEffect(() => {
+    if (!isFsSupported()) return;
+    void (async () => {
+      const state = await restoreDirectory();
+      setDirState(state);
+      if (state === "granted")
+        setDataJson(await readJsonFromLocal("data.json"));
+    })();
+  }, []);
+
+  // 授权后：pages 每次变更实时写入 pages.json + 自动保存导出 HTML（500ms 防抖）
+  useEffect(() => {
+    if (!dirReady) return;
+    const timer = setTimeout(() => {
+      void (async () => {
+        await writeJsonToLocal("pages.json", pages);
+        const dataLocal = await readJsonFromLocal("data.local.json");
+        const html = saveHtml(
+          pages,
+          (pageId) => pageWidths.current[pageId] ?? PAGE_WIDTH_FALLBACK,
+          dataLocal,
+        );
+        await writeTextToLocal("grid-layout.html", html);
+      })();
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [pages, dirReady]);
+
+  const handlePickDirectory = async () => {
+    if (dirState === "prompt") {
+      // handle 已在 IndexedDB，只需重新确认权限
+      if (await requestStoredPermission()) {
+        setDirState("granted");
+        setDataJson(await readJsonFromLocal("data.json"));
+      }
+      return;
+    }
+    await pickRootDirectory();
+    setDirState("granted");
+    setDataJson(await readJsonFromLocal("data.json"));
+  };
 
   const updatePage = (pageId: string, updater: (p: PageData) => PageData) =>
     setPages((prev) => prev.map((p) => (p.id === pageId ? updater(p) : p)));
+
+  // 上传页面背景图：写入授权文件夹 assets/ 子目录，配置里只存相对路径
+  const handleUploadBgImage = async (pageId: string, file: File) => {
+    const path = `assets/${uuidV7()}-${file.name}`;
+    await writeFileToLocal(path, file);
+    updatePage(pageId, (p) => ({
+      ...p,
+      config: { ...p.config, backgroundImage: path },
+    }));
+    setImageUrls((prev) => ({ ...prev, [path]: URL.createObjectURL(file) }));
+  };
 
   const addComponent = (
     def: PaletteDef,
@@ -258,19 +264,20 @@ export function GridDemoPage() {
       <div className="grid-demo-page">
         <style>{cardCss}</style>
         <header className="grid-demo-page-header">
-          <button
-            onClick={() =>
-              download(
-                "grid-layout.html",
-                exportHtml(
-                  pages,
-                  (pageId) => pageWidths.current[pageId] ?? PAGE_WIDTH_FALLBACK,
-                ),
-              )
-            }
-          >
-            导出 HTML
-          </button>
+          {isFsSupported() && (
+            <button onClick={handlePickDirectory} disabled={dirReady}>
+              {dirReady
+                ? "已授权本地文件夹"
+                : dirState === "prompt"
+                  ? "恢复本地文件夹授权"
+                  : "选择本地文件夹"}
+            </button>
+          )}
+          <span style={{ marginLeft: 8, color: "#888", fontSize: 12 }}>
+            {dirReady
+              ? `pages.json 与 grid-layout.html 实时保存中；data.json ${dataJson != null ? "已读取" : "不存在"}`
+              : "授权文件夹后 pages.json / grid-layout.html 自动落盘"}
+          </span>
         </header>
         <main className="grid-demo-page-main">
           <aside className="palette">
@@ -325,8 +332,11 @@ export function GridDemoPage() {
                     if (draggingPageId && draggingPageId !== page.id)
                       movePage(draggingPageId, idx);
                   }}
-                  onClick={() => setActivePageId(page.id)}
-                  title="拖拽排序，点击设为当前页"
+                  onClick={() => {
+                    setActivePageId(page.id);
+                    setSelected(null); // 显示页面配置
+                  }}
+                  title="拖拽排序，点击查看页面配置"
                 >
                   {idx + 1}
                   {pages.length > 1 && (
@@ -351,7 +361,19 @@ export function GridDemoPage() {
                 <div
                   key={page.id}
                   className={`page${page.id === activePageId ? " active" : ""}`}
-                  onClick={() => setActivePageId(page.id)}
+                  style={{
+                    backgroundColor: page.config?.backgroundColor,
+                    backgroundImage:
+                      page.config?.backgroundImage &&
+                      imageUrls[page.config.backgroundImage]
+                        ? `url('${imageUrls[page.config.backgroundImage]}')`
+                        : undefined,
+                    backgroundSize: "cover",
+                  }}
+                  onClick={() => {
+                    setActivePageId(page.id);
+                    setSelected(null); // 点页面空白处显示页面配置
+                  }}
                 >
                   <PageEditor
                     page={page}
@@ -391,45 +413,152 @@ export function GridDemoPage() {
             </div>
           </div>
 
-          {selectedContent && selected && (
-            <aside className="config">
-              <button className="close" onClick={() => setSelected(null)}>
-                ×
-              </button>
-              {(() => {
-                const updateSelected = (updater: (c: Content) => Content) =>
-                  updatePage(selected.pageId, (p) => ({
-                    ...p,
-                    contents: {
-                      ...p.contents,
-                      [selected.itemId]: updater(p.contents[selected.itemId]),
-                    },
-                  }));
+          <aside className="config">
+            {selectedContent && selected ? (
+              <>
+                <button className="close" onClick={() => setSelected(null)}>
+                  ×
+                </button>
+                {(() => {
+                  const updateSelected = (updater: (c: Content) => Content) =>
+                    updatePage(selected.pageId, (p) => ({
+                      ...p,
+                      contents: {
+                        ...p.contents,
+                        [selected.itemId]: updater(p.contents[selected.itemId]),
+                      },
+                    }));
+                  return (
+                    <BaseCardConfig
+                      componentName={selectedContent.componentName}
+                      id={selected.itemId}
+                      name={selectedContent.name}
+                      onNameChange={(name) =>
+                        updateSelected((c) => ({ ...c, name }))
+                      }
+                    >
+                      {selectedContent.componentType === "table" ? (
+                        <TableCardConfig
+                          content={selectedContent}
+                          onChange={(next) => updateSelected(() => next)}
+                        />
+                      ) : (
+                        <p style={{ color: "#888" }}>
+                          该组件（{selectedContent.componentType}
+                          ）暂无专属配置项。
+                        </p>
+                      )}
+                    </BaseCardConfig>
+                  );
+                })()}
+              </>
+            ) : (
+              // 未选中组件时：显示当前页的页面配置
+              (() => {
+                const page = pages.find((p) => p.id === activePageId);
+                if (!page) return null;
                 return (
-                  <BaseCardConfig
-                    componentName={selectedContent.componentName}
-                    id={selected.itemId}
-                    name={selectedContent.name}
-                    onNameChange={(name) =>
-                      updateSelected((c) => ({ ...c, name }))
-                    }
+                  <div
+                    style={{ display: "flex", flexDirection: "column", gap: 12 }}
                   >
-                    {selectedContent.componentType === "table" ? (
-                      <TableCardConfig
-                        content={selectedContent}
-                        onChange={(next) => updateSelected(() => next)}
+                    <strong>页面配置 — 第 {pages.findIndex((p) => p.id === page.id) + 1} 页</strong>
+                    <div
+                      style={{ fontSize: 12, color: "#888", wordBreak: "break-all" }}
+                    >
+                      id: {page.id}
+                    </div>
+                    <label
+                      style={{ display: "flex", alignItems: "center", gap: 8 }}
+                    >
+                      背景颜色:
+                      <input
+                        type="color"
+                        value={page.config?.backgroundColor ?? "#ffffff"}
+                        onChange={(e) =>
+                          updatePage(page.id, (p) => ({
+                            ...p,
+                            config: {
+                              ...p.config,
+                              backgroundColor: e.target.value,
+                            },
+                          }))
+                        }
                       />
-                    ) : (
-                      <p style={{ color: "#888" }}>
-                        该组件（{selectedContent.componentType}
-                        ）暂无专属配置项。
-                      </p>
-                    )}
-                  </BaseCardConfig>
+                      {page.config?.backgroundColor && (
+                        <button
+                          onClick={() =>
+                            updatePage(page.id, (p) => ({
+                              ...p,
+                              config: {
+                                ...p.config,
+                                backgroundColor: undefined,
+                              },
+                            }))
+                          }
+                        >
+                          清除
+                        </button>
+                      )}
+                    </label>
+                    <div>
+                      <div style={{ marginBottom: 4 }}>背景图片:</div>
+                      {page.config?.backgroundImage ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 4,
+                          }}
+                        >
+                          {imageUrls[page.config.backgroundImage] && (
+                            <img
+                              src={imageUrls[page.config.backgroundImage]}
+                              alt="背景图预览"
+                              style={{ maxWidth: "100%", borderRadius: 4 }}
+                            />
+                          )}
+                          <div
+                            style={{
+                              fontSize: 12,
+                              color: "#888",
+                              wordBreak: "break-all",
+                            }}
+                          >
+                            {page.config.backgroundImage}
+                          </div>
+                          <button
+                            onClick={() =>
+                              updatePage(page.id, (p) => ({
+                                ...p,
+                                config: {
+                                  ...p.config,
+                                  backgroundImage: undefined,
+                                },
+                              }))
+                            }
+                          >
+                            移除背景图
+                          </button>
+                        </div>
+                      ) : (
+                        <input
+                          type="file"
+                          accept="image/*"
+                          disabled={!dirReady}
+                          title={dirReady ? "上传到本地文件夹 assets/" : "需先授权本地文件夹"}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) void handleUploadBgImage(page.id, file);
+                            e.target.value = "";
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
                 );
-              })()}
-            </aside>
-          )}
+              })()
+            )}
+          </aside>
         </main>
       </div>
       <div style={{ display: "flex", gap: 16 }}>

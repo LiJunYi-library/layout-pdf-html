@@ -17,6 +17,10 @@ interface BaseContent {
   componentName: string
   /** 自定义名，用户在配置面板可改，不渲染到页面上 */
   name: string
+  /** LLM 生成的脚本代码：编辑态 new Function 执行，导出态内联 <script> */
+  script?: string
+  /** LLM 生成的样式代码：导出态内联 <style> */
+  style?: string
 }
 
 export type Content =
@@ -30,9 +34,18 @@ export type ChartContent = Extract<Content, { componentType: 'chart' }>
 export type TextContent = Extract<Content, { componentType: 'text' }>
 export type TableContent = Extract<Content, { componentType: 'table' }>
 
-/** 单页数据：一页一套 layout + contents */
+/** 页面级配置 */
+export interface PageConfig {
+  /** 页面背景色（CSS 颜色值） */
+  backgroundColor?: string
+  /** 页面背景图：本地文件夹内的相对路径，如 assets/xxx.png */
+  backgroundImage?: string
+}
+
+/** 单页数据：一页一套 layout + contents + 页面配置 */
 export interface PageData {
   id: string
   layout: LayoutItem[]
   contents: Record<string, Content>
+  config?: PageConfig
 }
