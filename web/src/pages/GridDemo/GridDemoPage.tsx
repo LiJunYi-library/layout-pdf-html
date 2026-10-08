@@ -1,7 +1,6 @@
 // React-Grid-Layout 试验页（/grid-demo）：多页面 + 组件拖入 + 选中配置 + 导出静态 HTML
 // 表格采用 A/B 双组件：编辑用 TableCardEdit（列宽可拖拽），导出用 TableCard（只读列宽数据）
 import { useEffect, useRef, useState } from "react";
-import type { LayoutItem } from "react-grid-layout";
 import { v7 as uuidV7 } from "uuid";
 import type { Content, PageData } from "./types";
 import { paletteDefs, paletteTree, type PaletteDef } from "./palette";
@@ -24,83 +23,29 @@ import "./GridDemoPage.scss";
 import { TableCardConfig } from "./components/TableCard/TableCard.config";
 import { BaseCardConfig } from "./components/BaseCard/BaseCard.config";
 
-// 初始条目：布局与内容成对定义，id 统一用 uuidV7 生成
-const initialEntries: Array<{
-  layout: Omit<LayoutItem, "i">;
-  content: Content;
-}> = [
-  {
-    layout: { x: 0, y: 0, w: 4, h: 3, minW: 2, maxW: 8 },
-    content: {
-      componentType: "stat",
-      componentCategory: "数据",
-      componentName: "统计卡片",
-      name: "",
-      value: "23",
-      color: "#91cc75",
-    },
-  },
-  {
-    layout: { x: 0, y: 0, w: 4, h: 3 },
-    content: {
-      componentType: "stat",
-      componentCategory: "数据",
-      componentName: "统计卡片",
-      name: "",
-      value: "7",
-      color: "#ee6666",
-    },
-  },
-  {
-    layout: { x: 0, y: 3, w: 6, h: 4 },
-    content: {
-      componentType: "chart",
-      componentCategory: "数据",
-      componentName: "图表",
-      name: "",
-      data: [12, 20, 15, 28, 22, 30, 26],
-    },
-  },
-  {
-    layout: { x: 6, y: 3, w: 6, h: 4 },
-    content: {
-      componentType: "text",
-      componentCategory: "文本",
-      componentName: "文本",
-      name: "",
-      text: "表格列边界可拖拽调宽；点击卡片选中后右侧编辑；「导出 HTML」生成静态页面。",
-    },
-  },
-  {
-    layout: { x: 0, y: 7, w: 12, h: 5 },
-    content: {
-      componentType: "table",
-      componentCategory: "表格",
-      componentName: "表格",
-      name: "",
-      columns: ["名称", "类型", "更新时间"],
-      colWidths: [50, 20, 30],
-      rows: [
-        ["团体报告.pdf", "报告", "2026-09-20"],
-        ["布局模板.json", "模板", "2026-09-25"],
-      ],
-    },
-  },
-];
+// 初始配置：本地没有 pages.json 时的兜底，只有一个空白页面
+function makeBlankPage(): PageData {
+  return { id: uuidV7(), layout: [], contents: {} };
+}
 
-function makeInitialPage(): PageData {
-  const ids = initialEntries.map(() => uuidV7());
-  return {
-    id: uuidV7(),
-    layout: initialEntries.map((e, idx) => ({ i: ids[idx], ...e.layout })),
-    contents: Object.fromEntries(
-      initialEntries.map((e, idx) => [ids[idx], e.content]),
-    ),
-  };
+// 校验本地 pages.json 的结构是否合法
+function isValidPages(data: unknown): data is PageData[] {
+  return (
+    Array.isArray(data) &&
+    data.length > 0 &&
+    data.every(
+      (p) =>
+        p != null &&
+        typeof p.id === "string" &&
+        Array.isArray(p.layout) &&
+        p.contents != null &&
+        typeof p.contents === "object",
+    )
+  );
 }
 
 export function GridDemoPage() {
-  const [pages, setPages] = useState<PageData[]>(() => [makeInitialPage()]);
+  const [pages, setPages] = useState<PageData[]>(() => [makeBlankPage()]);
   const [selected, setSelected] = useState<{
     pageId: string;
     itemId: string;
@@ -133,15 +78,27 @@ export function GridDemoPage() {
     }
   }, [pages, dirReady, imageUrls]);
 
-  // 页面加载：从 IndexedDB 恢复目录 handle；已授权则直接可用
+  // 授权成功后加载本地配置：优先 pages.json（没有则保持空白页），再读 data.json
+  const loadLocalConfig = async () => {
+    const saved = await readJsonFromLocal<unknown>("pages.json");
+    if (isValidPages(saved)) {
+      setPages(saved);
+      setActivePageId(saved[0].id);
+      setSelected(null);
+    }
+    setDataJson(await readJsonFromLocal("data.json"));
+  };
+
+  // 页面加载：从 IndexedDB 恢复目录 handle；已授权则加载本地配置
+  // 注意顺序：先 loadLocalConfig 再置 granted，避免自动保存把空白页覆盖写回 pages.json
   useEffect(() => {
     if (!isFsSupported()) return;
     void (async () => {
       const state = await restoreDirectory();
+      if (state === "granted") await loadLocalConfig();
       setDirState(state);
-      if (state === "granted")
-        setDataJson(await readJsonFromLocal("data.json"));
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 授权后：pages 每次变更实时写入 pages.json + 自动保存导出 HTML（500ms 防抖）
@@ -166,14 +123,14 @@ export function GridDemoPage() {
     if (dirState === "prompt") {
       // handle 已在 IndexedDB，只需重新确认权限
       if (await requestStoredPermission()) {
+        await loadLocalConfig();
         setDirState("granted");
-        setDataJson(await readJsonFromLocal("data.json"));
       }
       return;
     }
     await pickRootDirectory();
+    await loadLocalConfig();
     setDirState("granted");
-    setDataJson(await readJsonFromLocal("data.json"));
   };
 
   const updatePage = (pageId: string, updater: (p: PageData) => PageData) =>
