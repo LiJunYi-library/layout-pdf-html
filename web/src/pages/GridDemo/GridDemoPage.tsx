@@ -28,6 +28,7 @@ import { StatCardConfig } from "./components/StatCard/StatCard.config";
 import { StatGroupCardConfig } from "./components/StatGroupCard/StatGroupCard.config";
 import { TextCardConfig } from "./components/TextCard/TextCard.config";
 import { AiSummaryCardConfig } from "./components/AiSummaryCard/AiSummaryCard.config";
+import { CompareBarCardConfig } from "./components/CompareBarCard/CompareBarCard.config";
 import { BaseCardConfig } from "./components/BaseCard/BaseCard.config";
 
 // 初始配置：本地没有 pages.json 时的兜底，只有一个空白页面
@@ -463,6 +464,13 @@ export function GridDemoPage() {
                                 content={selectedContent}
                                 contents={selectedPage?.contents ?? {}}
                                 selfId={selected.itemId}
+                                onChange={(next) => updateSelected(() => next)}
+                              />
+                            );
+                          case "compareBar":
+                            return (
+                              <CompareBarCardConfig
+                                content={selectedContent}
                                 onChange={(next) => updateSelected(() => next)}
                               />
                             );

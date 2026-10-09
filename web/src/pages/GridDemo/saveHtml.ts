@@ -79,7 +79,7 @@ ${items.join("\n")}
   // 有图表组件时才引 echarts CDN（同步加载，保证卡片内联 script 执行时 window.echarts 已就绪）
   const hasChart = pages.some((page) =>
     Object.values(page.contents).some(
-      (c) => c.componentType === "chart" || c.componentType === "pie",
+      (c) => c.componentType === "chart" || c.componentType === "pie" || c.componentType === "compareBar",
     ),
   );
   return `<!DOCTYPE html>

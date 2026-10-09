@@ -12,6 +12,8 @@ import { TextCard } from "./components/TextCard/TextCard";
 import { TableCard } from "./components/TableCard/TableCard";
 import { TableCardEdit } from "./components/TableCard/TableCard.edit";
 import { AiSummaryCard } from "./components/AiSummaryCard/AiSummaryCard";
+import { CompareBarCard } from "./components/CompareBarCard/CompareBarCard";
+import { CompareBarCardEdit } from "./components/CompareBarCard/CompareBarCard.edit";
 import { EditExtras } from "./components/EditExtras/EditExtras";
 
 // 导出态注入：script 包在块级作用域里，root 用 document.currentScript 向上找 [data-id]，
@@ -94,6 +96,12 @@ export function renderEditorContent(
           {extras}
         </AiSummaryCard>
       );
+    case "compareBar":
+      return (
+        <CompareBarCardEdit id={id} content={content}>
+          {extras}
+        </CompareBarCardEdit>
+      );
   }
 }
 
@@ -142,6 +150,12 @@ export function renderStaticContent(id: string, content: Content) {
         <AiSummaryCard id={id} content={content}>
           {extras}
         </AiSummaryCard>
+      );
+    case "compareBar":
+      return (
+        <CompareBarCard id={id} content={content}>
+          {extras}
+        </CompareBarCard>
       );
   }
 }

@@ -46,7 +46,7 @@ export function loadECharts(): Promise<EChartsStatic> {
 }
 
 // value 轴上限：最大值 + 最大值/分隔段数（即多留出一格刻度），避免顶部标签溢出/顶到 legend
-function valueAxisMax(values: number[], splitNumber: number): number {
+export function valueAxisMax(values: number[], splitNumber: number): number {
   const dataMax = Math.max(0, ...values);
   return Math.ceil(dataMax + dataMax / splitNumber);
 }
@@ -54,11 +54,14 @@ function valueAxisMax(values: number[], splitNumber: number): number {
 // 由 content 构建 echarts option（导出 HTML 时序列化进内联 script）
 export function buildChartOption(content: ChartContent) {
   const horizontal = content.categoryAxis === "y";
+  // 类目轴居中（负值场景）：隐藏类目轴文字，类目名改由柱子标签贴到零轴端
+  const centerCategory = content.categoryAxisCenter ?? false;
   // 类目轴在 y 轴（横向条形图）时 inverse：第一个类目显示在最上方，从上到下排
   const categoryAxis = {
     type: "category",
     data: content.categoryData ?? [],
     ...(horizontal ? { inverse: true } : {}),
+    ...(centerCategory ? { axisLabel: { show: false } } : {}),
   };
   // max 要直接算成数值（option 会 JSON 序列化进导出 HTML，函数会被丢掉）
   // 有堆叠时按「堆叠组每类目的合计」取最大值，否则堆叠柱总高会超出轴上限
@@ -78,9 +81,14 @@ export function buildChartOption(content: ChartContent) {
   }
   totals.push(...[...stackSums.values()].flat());
   const splitNumber = Math.max(1, content.splitNumber ?? 5);
+  // 有负值时对称地给负向也留一格刻度余量，避免负向柱子顶到 grid 边缘
+  const dataMin = Math.min(0, ...totals);
   const valueAxis = {
     type: "value",
     max: valueAxisMax(totals, splitNumber),
+    ...(dataMin < 0
+      ? { min: Math.floor(dataMin + dataMin / splitNumber) }
+      : {}),
     splitNumber,
   };
   // 柱值标签默认显示；位置默认柱子中间，顶部/底部在横向时映射为右端/左端
@@ -107,19 +115,32 @@ export function buildChartOption(content: ChartContent) {
     }
   }
   const formatPoint = (v: number, i: number) => {
+    // 类目轴居中：标签显示类目名，贴到柱子靠零轴的一端（正值左/下端，负值右/上端）
+    if (centerCategory) {
+      return {
+        formatter: content.categoryData?.[i] ?? "",
+        position: horizontal
+          ? v >= 0
+            ? "insideLeft"
+            : "insideRight"
+          : v >= 0
+            ? "insideBottom"
+            : "insideTop",
+      };
+    }
     const segs = [`${v}${unit}`];
     if (showPercent) {
       const total = catTotals[i] ?? 0;
       segs.push(`(${total ? ((v / total) * 100).toFixed(1) : "0"}%)`);
     }
-    return segs.join(" ");
+    return { formatter: segs.join(" ") };
   };
-  const withPointLabels = showPercent || unit !== "";
+  const withPointLabels = centerCategory || showPercent || unit !== "";
   const series = (content.series ?? []).map((s) => ({
     name: s.name,
     type: s.type ?? "bar",
     data: withPointLabels
-      ? s.data.map((v, i) => ({ value: v, label: { formatter: formatPoint(v, i) } }))
+      ? s.data.map((v, i) => ({ value: v, label: formatPoint(v, i) }))
       : s.data,
     label,
     // 柱子宽度：像素值或百分比字符串，默认 40%；清空走 echarts 默认均分（line 系列会忽略此项）

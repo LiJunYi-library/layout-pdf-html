@@ -8,6 +8,7 @@ import { statGroupCardDefault } from "./components/StatGroupCard/StatGroupCard.d
 import { textCardDefault } from "./components/TextCard/TextCard.default.config";
 import { tableCardDefault } from "./components/TableCard/TableCard.default.config";
 import { aiSummaryCardDefault } from "./components/AiSummaryCard/AiSummaryCard.default.config";
+import { compareBarCardDefault } from "./components/CompareBarCard/CompareBarCard.default.config";
 
 export interface PaletteDef {
   layout: Omit<LayoutItem, "i" | "x" | "y">;
@@ -18,6 +19,7 @@ export const paletteDefs: PaletteDef[] = [
   statCardDefault,
   statGroupCardDefault,
   chartCardDefault,
+  compareBarCardDefault,
   pieCardDefault,
   textCardDefault,
   tableCardDefault,

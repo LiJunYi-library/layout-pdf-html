@@ -29,6 +29,22 @@ interface BaseContent {
   promptHeight?: number
 }
 
+/** 对比条形图数据项：一行指标的本班/同年级两个值 + 重点关注率副行 + 差异覆盖 */
+export interface CompareBarItem {
+  /** 指标名（类目主名） */
+  name: string
+  /** 本班值 */
+  value_a: number
+  /** 同年级值 */
+  value_b: number
+  /** 本班重点关注率（类目副行用） */
+  value_a_sub?: number
+  /** 同年级重点关注率（类目副行用） */
+  value_b_sub?: number
+  /** 差异文本手动覆盖（如 '+7.0pct'）；不填按 value_a - value_b 预算，正红负灰 */
+  diff?: string
+}
+
 /** 图表系列：type 默认 'bar'；color 不设置时走 echarts 默认调色板；stack 为堆叠组名，同名系列堆叠在一起 */
 export interface ChartSeriesItem {
   name: string
@@ -75,6 +91,8 @@ export type Content =
       series: ChartSeriesItem[]
       /** 类目轴方向：'x' 竖向柱状图；'y' 横向条形图 */
       categoryAxis: 'x' | 'y'
+      /** 类目轴居中（负值场景）：隐藏类目轴文字，类目名贴到柱子靠零轴的一端，默认 false */
+      categoryAxisCenter?: boolean
       /** 是否显示柱值标签，默认开 */
       showLabel?: boolean
       /** 柱值标签位置：'middle' 柱子中间（默认）；'top' 顶部（横向为右端）；'bottom' 底部（横向为左端） */
@@ -113,6 +131,36 @@ export type Content =
       /** 是否显示标题，默认 true（无标题文本时不显示） */
       showTitle?: boolean
       /** 标题位置，默认居中 */
+      titlePosition?: 'left' | 'center' | 'right'
+    })
+  | (BaseContent & {
+      componentType: 'compareBar'
+      /** 对比数据项，从上到下排列 */
+      value: CompareBarItem[]
+      /** 系列名，默认 本班关注率 / 同年级关注率 */
+      name_a?: string
+      name_b?: string
+      /** 数值单位，默认 % */
+      unit?: string
+      /** 系列颜色（默认深蓝/浅蓝） */
+      color_a?: string
+      color_b?: string
+      /** 是否显示类目副行（重点关注率），默认 true（无副行数据时不显示） */
+      showSub?: boolean
+      /** 是否显示右侧差异列，默认 true */
+      showDiff?: boolean
+      /** 差异列标题（支持 \n 换行），默认 '与同年级差异\n（百分点）' */
+      diffTitle?: string
+      /** 差异配色：正值 / 负值 */
+      colorUp?: string
+      colorDown?: string
+      /** 柱子宽度：像素值（'14'），默认 14 */
+      barWidth?: string
+      /** 标题文本 */
+      title?: string
+      /** 是否显示标题，默认 true（无标题文本时不显示） */
+      showTitle?: boolean
+      /** 标题位置，默认左 */
       titlePosition?: 'left' | 'center' | 'right'
     })
   | (BaseContent & {
@@ -158,6 +206,7 @@ export type StatGroupContent = Extract<Content, { componentType: 'statGroup' }>
 export type TextContent = Extract<Content, { componentType: 'text' }>
 export type TableContent = Extract<Content, { componentType: 'table' }>
 export type AiSummaryContent = Extract<Content, { componentType: 'aiSummary' }>
+export type CompareBarContent = Extract<Content, { componentType: 'compareBar' }>
 
 /** 页面级配置 */
 export interface PageConfig {

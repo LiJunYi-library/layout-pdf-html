@@ -283,6 +283,14 @@ export function ChartCardConfig({ content, onChange }: { content: ChartContent; 
             Y 轴（横向条形图）
           </label>
         </div>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 4 }}>
+          <input
+            type="checkbox"
+            checked={content.categoryAxisCenter ?? false}
+            onChange={(e) => onChange({ ...content, categoryAxisCenter: e.target.checked })}
+          />
+          类目轴居中（负值时类目名贴到零轴）
+        </label>
       </div>
       <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
         <input
