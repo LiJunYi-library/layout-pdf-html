@@ -11,7 +11,14 @@ export function StatCard({
   children?: ReactNode;
 }) {
   return (
-    <div className="card-body" data-id={id} data-name={content.name} data-type={content.componentType}>
+    <div
+      className="card-body"
+      data-id={id}
+      data-name={content.name}
+      data-type={content.componentType}
+      style={{ textAlign: content.align ?? "left" }}
+    >
+      {content.title && <div className="stat-title">{content.title}</div>}
       <div className="stat-value" style={{ color: content.color }}>
         {content.value}
       </div>

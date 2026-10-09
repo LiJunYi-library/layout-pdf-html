@@ -22,6 +22,12 @@ import {
 import { cardCss } from "./cardCss";
 import "./GridDemoPage.scss";
 import { TableCardConfig } from "./components/TableCard/TableCard.config";
+import { ChartCardConfig } from "./components/ChartCard/ChartCard.config";
+import { PieCardConfig } from "./components/PieCard/PieCard.config";
+import { StatCardConfig } from "./components/StatCard/StatCard.config";
+import { StatGroupCardConfig } from "./components/StatGroupCard/StatGroupCard.config";
+import { TextCardConfig } from "./components/TextCard/TextCard.config";
+import { AiSummaryCardConfig } from "./components/AiSummaryCard/AiSummaryCard.config";
 import { BaseCardConfig } from "./components/BaseCard/BaseCard.config";
 
 // 初始配置：本地没有 pages.json 时的兜底，只有一个空白页面
@@ -398,18 +404,70 @@ export function GridDemoPage() {
                       onNameChange={(name) =>
                         updateSelected((c) => ({ ...c, name }))
                       }
+                      prompt={selectedContent.prompt}
+                      onPromptChange={(prompt) =>
+                        updateSelected((c) => ({ ...c, prompt }))
+                      }
+                      promptHeight={selectedContent.promptHeight}
+                      onPromptHeightChange={(promptHeight) =>
+                        updateSelected((c) => ({ ...c, promptHeight }))
+                      }
                     >
-                      {selectedContent.componentType === "table" ? (
-                        <TableCardConfig
-                          content={selectedContent}
-                          onChange={(next) => updateSelected(() => next)}
-                        />
-                      ) : (
-                        <p style={{ color: "#888" }}>
-                          该组件（{selectedContent.componentType}
-                          ）暂无专属配置项。
-                        </p>
-                      )}
+                      {(() => {
+                        switch (selectedContent.componentType) {
+                          case "table":
+                            return (
+                              <TableCardConfig
+                                content={selectedContent}
+                                onChange={(next) => updateSelected(() => next)}
+                              />
+                            );
+                          case "chart":
+                            return (
+                              <ChartCardConfig
+                                content={selectedContent}
+                                onChange={(next) => updateSelected(() => next)}
+                              />
+                            );
+                          case "pie":
+                            return (
+                              <PieCardConfig
+                                content={selectedContent}
+                                onChange={(next) => updateSelected(() => next)}
+                              />
+                            );
+                          case "stat":
+                            return (
+                              <StatCardConfig
+                                content={selectedContent}
+                                onChange={(next) => updateSelected(() => next)}
+                              />
+                            );
+                          case "statGroup":
+                            return (
+                              <StatGroupCardConfig
+                                content={selectedContent}
+                                onChange={(next) => updateSelected(() => next)}
+                              />
+                            );
+                          case "text":
+                            return (
+                              <TextCardConfig
+                                content={selectedContent}
+                                onChange={(next) => updateSelected(() => next)}
+                              />
+                            );
+                          case "aiSummary":
+                            return (
+                              <AiSummaryCardConfig
+                                content={selectedContent}
+                                contents={selectedPage?.contents ?? {}}
+                                selfId={selected.itemId}
+                                onChange={(next) => updateSelected(() => next)}
+                              />
+                            );
+                        }
+                      })()}
                     </BaseCardConfig>
                   );
                 })()}

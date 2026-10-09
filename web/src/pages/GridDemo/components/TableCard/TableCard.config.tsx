@@ -20,23 +20,59 @@ export  function TableCardConfig({ content, onChange }: { content: TableContent;
       ...content,
       columns: content.columns.filter((_, i) => i !== ci),
       colWidths: widths.map((w) => (w / total) * 100),
-      rows: content.rows.map((row) => row.filter((_, i) => i !== ci)),
+      value_rows: content.value_rows.map((row) => row.filter((_, i) => i !== ci)),
     })
   }
 
   const setCell = (ri: number, ci: number, value: string) =>
     onChange({
       ...content,
-      rows: content.rows.map((row, i) => (i === ri ? row.map((c, j) => (j === ci ? value : c)) : row)),
+      // 按列数对齐补齐：行内格子可能少于列数，map 遍历不到的下标要能写入
+      value_rows: content.value_rows.map((row, i) =>
+        i === ri
+          ? content.columns.map((_, j) => (j === ci ? value : (row[j] ?? '')))
+          : row,
+      ),
     })
 
-  const addRow = () => onChange({ ...content, rows: [...content.rows, content.columns.map(() => '')] })
+  const addRow = () => onChange({ ...content, value_rows: [...content.value_rows, content.columns.map(() => '')] })
 
-  const removeRow = (ri: number) => onChange({ ...content, rows: content.rows.filter((_, i) => i !== ri) })
+  const removeRow = (ri: number) => onChange({ ...content, value_rows: content.value_rows.filter((_, i) => i !== ri) })
 
   return (
     // 标题由 BaseCardConfig 统一渲染，这里只管表格专属配置
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 4, flex: 1, minWidth: 0 }}>
+          标题
+          <input
+            style={{ flex: 1, minWidth: 0 }}
+            value={content.title ?? ''}
+            onChange={(e) => onChange({ ...content, title: e.target.value })}
+          />
+        </label>
+        <select
+          value={content.titlePosition ?? 'center'}
+          onChange={(e) =>
+            onChange({
+              ...content,
+              titlePosition: e.target.value as TableContent['titlePosition'],
+            })
+          }
+        >
+          <option value="left">左</option>
+          <option value="center">中</option>
+          <option value="right">右</option>
+        </select>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <input
+            type="checkbox"
+            checked={content.showTitle ?? true}
+            onChange={(e) => onChange({ ...content, showTitle: e.target.checked })}
+          />
+          展示
+        </label>
+      </div>
       <div>
         <strong>列</strong>
         {content.columns.map((col, ci) => (
@@ -51,17 +87,41 @@ export  function TableCardConfig({ content, onChange }: { content: TableContent;
       </div>
       <div>
         <strong>行</strong>
-        {content.rows.map((row, ri) => (
-          <div key={ri} style={{ display: 'flex', gap: 4, marginTop: 4 }}>
-            {content.columns.map((_, ci) => (
-              <input
+        {content.value_rows.map((row, ri) => (
+          <div
+            key={ri}
+            style={{
+              border: '1px solid #eee',
+              borderRadius: 6,
+              padding: 8,
+              marginTop: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 4,
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: 12, color: '#888' }}>行 {ri + 1}</span>
+              <button onClick={() => removeRow(ri)}>×</button>
+            </div>
+            {content.columns.map((col, ci) => (
+              <label
                 key={ci}
-                style={{ flex: 1, minWidth: 0 }}
-                value={row[ci] ?? ''}
-                onChange={(e) => setCell(ri, ci, e.target.value)}
-              />
+                style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#888' }}
+              >
+                <span
+                  title={col}
+                  style={{ width: 64, flexShrink: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                >
+                  {col || `列${ci + 1}`}
+                </span>
+                <input
+                  style={{ flex: 1, minWidth: 0 }}
+                  value={row[ci] ?? ''}
+                  onChange={(e) => setCell(ri, ci, e.target.value)}
+                />
+              </label>
             ))}
-            <button onClick={() => removeRow(ri)}>×</button>
           </div>
         ))}
         <button style={{ marginTop: 4 }} onClick={addRow}>添加行</button>

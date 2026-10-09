@@ -6,8 +6,10 @@ export const chartCardDefault = {
   content: {
     componentType: 'chart',
     componentCategory: '数据',
-    componentName: '图表',
+    componentName: '柱状图表',
     name: '',
-    data: [5, 9, 7, 12, 8],
+    categoryData: ['一月', '二月', '三月', '四月', '五月'],
+    series: [{ name: '数量', type: 'bar', data: [5, 9, 7, 12, 8] }],
+    categoryAxis: 'x',
   } satisfies ChartContent,
 }

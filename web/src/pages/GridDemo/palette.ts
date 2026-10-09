@@ -3,8 +3,11 @@ import type { LayoutItem } from "react-grid-layout";
 import type { Content } from "./types";
 import { statCardDefault } from "./components/StatCard/StatCard.default.config";
 import { chartCardDefault } from "./components/ChartCard/ChartCard.default.config";
+import { pieCardDefault } from "./components/PieCard/PieCard.default.config";
+import { statGroupCardDefault } from "./components/StatGroupCard/StatGroupCard.default.config";
 import { textCardDefault } from "./components/TextCard/TextCard.default.config";
 import { tableCardDefault } from "./components/TableCard/TableCard.default.config";
+import { aiSummaryCardDefault } from "./components/AiSummaryCard/AiSummaryCard.default.config";
 
 export interface PaletteDef {
   layout: Omit<LayoutItem, "i" | "x" | "y">;
@@ -13,9 +16,12 @@ export interface PaletteDef {
 
 export const paletteDefs: PaletteDef[] = [
   statCardDefault,
+  statGroupCardDefault,
   chartCardDefault,
+  pieCardDefault,
   textCardDefault,
   tableCardDefault,
+  aiSummaryCardDefault,
 ];
 
 // 按 componentCategory 分组为两级树：分类 → 组件

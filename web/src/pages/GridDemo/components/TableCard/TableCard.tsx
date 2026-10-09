@@ -13,6 +13,14 @@ export function TableCard({
 }) {
   return (
     <div className="card-body" data-id={id} data-name={content.name} data-type={content.componentType}>
+      {content.title && (content.showTitle ?? true) ? (
+        <div
+          className="card-table-title"
+          style={{ textAlign: content.titlePosition ?? "center" }}
+        >
+          {content.title}
+        </div>
+      ) : null}
       <table className="card-table">
         <colgroup>
           {content.colWidths.map((w, ci) => (
@@ -27,7 +35,7 @@ export function TableCard({
           </tr>
         </thead>
         <tbody>
-          {content.rows.map((row, ri) => (
+          {content.value_rows.map((row, ri) => (
             <tr key={ri}>
               {content.columns.map((_, ci) => (
                 <td key={ci}>{row[ci] ?? ""}</td>

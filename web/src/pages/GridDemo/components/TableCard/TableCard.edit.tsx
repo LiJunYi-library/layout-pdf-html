@@ -14,7 +14,7 @@ export function TableCardEdit({
   children?: ReactNode;
 }) {
   const tableRef = useRef<HTMLTableElement>(null);
-  const { columns, rows, colWidths } = content;
+  const { columns, value_rows, colWidths } = content;
 
   const startDrag = (ci: number, e: React.MouseEvent) => {
     e.preventDefault();
@@ -42,6 +42,14 @@ export function TableCardEdit({
 
   return (
     <div className="card-body" data-id={id} data-name={content.name} data-type={content.componentType}>
+      {content.title && (content.showTitle ?? true) ? (
+        <div
+          className="card-table-title"
+          style={{ textAlign: content.titlePosition ?? "center" }}
+        >
+          {content.title}
+        </div>
+      ) : null}
       <table className="card-table" ref={tableRef}>
         <colgroup>
           {colWidths.map((w, ci) => (
@@ -64,7 +72,7 @@ export function TableCardEdit({
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, ri) => (
+          {value_rows.map((row, ri) => (
             <tr key={ri}>
               {columns.map((_, ci) => (
                 <td key={ci}>{row[ci] ?? ""}</td>

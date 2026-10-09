@@ -36,3 +36,10 @@ src/pages/XxxPage/
 - **统一 props 签名**：卡片组件接收 `{ id, content }` 两个 prop——`id` 是布局条目 id（layout 里的 `i`），`content` 是该条目的完整内容对象，组件内部自行取用字段；另接受可选 `children`（`content.script` / `content.style` 的注入点），必须渲染在 `.card-body` 内部末尾。
 - **根节点挂数据属性**：每个卡片组件的根节点（`.card-body`）必须挂 `data-id={id}`、`data-name={content.name}` 和 `data-type={content.componentType}`。渲染和导出共用同一套组件，导出的 HTML 里凭 `[data-id]` 即可定位任意组件实例、`[data-type]` 可区分组件类型，供后续注入数据/后处理使用。
 - 参考实现：`src/pages/GridDemo/`。
+
+## 组件字段命名规范
+
+`content` 上的字段按用途统一命名：
+
+- **值字段**：组件的**业务数据**统一用 `value` 或 `value_xxx` 命名（如统计卡片的 `value`、多值场景用 `value_total` / `value_rate`）。与业务数据无关的字段不受此约束：外观/样式类配置（`color`、`title` 等）、纯文本内容（`text`）等维持自有命名。
+- **提示词字段**：给 LLM 的提示词统一用 `prompt` 或 `prompt_xxx` 命名（如公共的 `prompt`、分用途的 `prompt_script` / `prompt_style`）。

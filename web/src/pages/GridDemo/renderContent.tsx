@@ -3,10 +3,15 @@
 // 编辑态由 EditExtras 处理；导出态两者都原样内联（dangerouslySetInnerHTML 避免 React 转义代码里的 < >）
 import type { Content, TableContent } from "./types";
 import { StatCard } from "./components/StatCard/StatCard";
+import { StatGroupCard } from "./components/StatGroupCard/StatGroupCard";
 import { ChartCard } from "./components/ChartCard/ChartCard";
+import { ChartCardEdit } from "./components/ChartCard/ChartCard.edit";
+import { PieCard } from "./components/PieCard/PieCard";
+import { PieCardEdit } from "./components/PieCard/PieCard.edit";
 import { TextCard } from "./components/TextCard/TextCard";
 import { TableCard } from "./components/TableCard/TableCard";
 import { TableCardEdit } from "./components/TableCard/TableCard.edit";
+import { AiSummaryCard } from "./components/AiSummaryCard/AiSummaryCard";
 import { EditExtras } from "./components/EditExtras/EditExtras";
 
 // 导出态注入：script 包在块级作用域里，root 用 document.currentScript 向上找 [data-id]，
@@ -47,11 +52,23 @@ export function renderEditorContent(
           {extras}
         </StatCard>
       );
+    case "statGroup":
+      return (
+        <StatGroupCard id={id} content={content}>
+          {extras}
+        </StatGroupCard>
+      );
     case "chart":
       return (
-        <ChartCard id={id} content={content}>
+        <ChartCardEdit id={id} content={content}>
           {extras}
-        </ChartCard>
+        </ChartCardEdit>
+      );
+    case "pie":
+      return (
+        <PieCardEdit id={id} content={content}>
+          {extras}
+        </PieCardEdit>
       );
     case "text":
       return (
@@ -71,6 +88,12 @@ export function renderEditorContent(
           {extras}
         </TableCardEdit>
       );
+    case "aiSummary":
+      return (
+        <AiSummaryCard id={id} content={content}>
+          {extras}
+        </AiSummaryCard>
+      );
   }
 }
 
@@ -84,11 +107,23 @@ export function renderStaticContent(id: string, content: Content) {
           {extras}
         </StatCard>
       );
+    case "statGroup":
+      return (
+        <StatGroupCard id={id} content={content}>
+          {extras}
+        </StatGroupCard>
+      );
     case "chart":
       return (
         <ChartCard id={id} content={content}>
           {extras}
         </ChartCard>
+      );
+    case "pie":
+      return (
+        <PieCard id={id} content={content}>
+          {extras}
+        </PieCard>
       );
     case "text":
       return (
@@ -101,6 +136,12 @@ export function renderStaticContent(id: string, content: Content) {
         <TableCard id={id} content={content}>
           {extras}
         </TableCard>
+      );
+    case "aiSummary":
+      return (
+        <AiSummaryCard id={id} content={content}>
+          {extras}
+        </AiSummaryCard>
       );
   }
 }

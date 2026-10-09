@@ -8,6 +8,7 @@ export const statCardDefault = {
     componentCategory: '数据',
     componentName: '统计卡片',
     name: '',
+    title: '标题',
     value: '0',
     color: '#5470c6',
   } satisfies StatContent,

@@ -10,6 +10,6 @@ export const tableCardDefault = {
     name: '',
     columns: ['列1', '列2'],
     colWidths: [50, 50],
-    rows: [['', '']],
+    value_rows: [['', '']],
   } satisfies TableContent,
 }

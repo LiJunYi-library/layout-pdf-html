@@ -6,6 +6,7 @@ import type { PageData } from "./types";
 import { COLS, MARGIN, ROW_HEIGHT } from "./grid";
 import { renderStaticContent } from "./renderContent";
 import { cardCss } from "./cardCss";
+import { ECHARTS_CDN } from "./components/ChartCard/echarts";
 
 // A4 @96dpi 兜底宽度（页面尚未测量到宽度时用它）
 const PAGE_WIDTH_FALLBACK = 794;
@@ -75,12 +76,19 @@ ${items.join("\n")}
     box-shadow: 0 1px 4px rgba(0,0,0,0.15); box-sizing: border-box; }
   @media print { .page { page-break-after: always; margin: 0; box-shadow: none; } }
 `;
+  // 有图表组件时才引 echarts CDN（同步加载，保证卡片内联 script 执行时 window.echarts 已就绪）
+  const hasChart = pages.some((page) =>
+    Object.values(page.contents).some(
+      (c) => c.componentType === "chart" || c.componentType === "pie",
+    ),
+  );
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
 <title>导出的布局</title>
 <script>window.__DATA = ${JSON.stringify(dataLocal ?? null)};</script>
+${hasChart ? `<script src="${ECHARTS_CDN}"></script>` : ""}
 <style>${cardCss}${pageCss}</style>
 </head>
 <body>

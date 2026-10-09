@@ -145,12 +145,14 @@
 
   // 右侧配置面板
   .config {
-    width: 300px;
+    width: 400px;
     flex-shrink: 0;
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 16px;
     position: relative;
+    max-height: 100%;
+    overflow: auto;
 
     .close {
       position: absolute;
